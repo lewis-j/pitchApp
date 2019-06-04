@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Serif|Cinzel');
+
+
+body {
+	font-family: 'PT Serif', serif;
+	background-color:#f8fbff;
+}
+
+#logout{
+	position: absolute;
+	right: 5px;
+	margin:5px;
+}
+.header-title{
+	font-family: 'Cinzel', serif;
+	margin-top: 30px;
+	color:#002654;
+}
+.header-title div{
+	font-weight: bold;
+	font-size: 40px;
+}
+
+.header-title p{
+	margin-left: 55px;
+	font-size:25px;
+}
+.card-body{
+	padding: 2px;
+}
+
+.my-tables{
+	padding: 5px;
+	
+}
+
+.table-group{
+	border: 1px solid black;
+	border-radius: 18px;
+	box-shadow: 5px 10px 30px #d1d1d1;
+	margin-top: 10px;
+	background-color: white;
+	
+}
+.card{
+	color: black;
+}
+
+.cust-svg{
+	width: 30vw;
+	height: calc(30vw * 1.094);
+	margin-top: 2%;
+	margin-left:15%;	
+	border: 1px solid black;
+		box-shadow: 5px 10px 15px #d1d1d1;
+}
+
+.menu{
+		border: 1px solid black;
+	box-shadow: 5px 10px 15px black;
+	margin-top: 0px;
+	background-color: #212529;
+	color: white;
+}
+
+.legend{
+	margin-top:5px;
+	margin-bottom:5px;
+	
+}
+
+.legend-item{
+	border-radius:25px;
+	text-align: center;
+	padding-top: 2px;
+	width:30px;
+	height:30px;
+	color: white;
+}
+
+.chart-data{
+	/*background-color:white;*/
+	/*border-radius: 15px;*/
+	margin-top:45px;
+  margin-bottom:20px;
+}
+
+.key{
+	margin-top:75px;
+}
+
+.key2 th{
+	height: 34.4px;
+}
+.game-stat {
+	margin-bottom: 0px;
+    margin-left: 32px;
+    width: 91.5%;
+}
+
+.chart-key{
+	position: absolute; 
+	top:80px;
+}
+
+.clear-left-padding{
+	padding-left: 0px;
+}
+
+#pitcher-title{
+	text-align:center;
+	margin:35px;
+}
+
+.table-border{
+	border: 1px solid #dee2e6;
+}
+
+#logo{
+	padding:5px;
+	height: 140px;
+	width:170px;
+}
+.logout{
+	position:absolute;
+	right: 50px;
+}
+
+.game-title{
+	text-align:center;
+	font-size: 30px;
+	
+}
+
+.title{
+	font-size: 30px;
+	padding-left:10px;
+}
+
+.header {
+background-color: 	#f8fbff;
+	
+}
+
+.panel-default>.panel-heading {
+	background-color: #212529;
+	color:white;
+}

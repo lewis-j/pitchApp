@@ -1,0 +1,12 @@
+[23-May-2019 19:22:31 UTC] PHP Parse error:  syntax error, unexpected '{' in /home/ubuntu/workspace/aaa-team/development/lj/pitchUI/pitchUI-ver.0.17.9/pitchTrackWorkbench-ver-0.9.1/php/SQLConnect.inc.php on line 32
+[23-May-2019 19:22:31 UTC] PHP Stack trace:
+[23-May-2019 19:22:31 UTC] PHP   1. {main}() /home/ubuntu/workspace/aaa-team/development/lj/pitchUI/pitchUI-ver.0.17.9/pitchTrackWorkbench-ver-0.9.1/php/main.php:0
+[23-May-2019 19:24:53 UTC] PHP Parse error:  syntax error, unexpected 'Location' (T_STRING), expecting ',' or ';' in /home/ubuntu/workspace/aaa-team/development/lj/pitchUI/pitchUI-ver.0.17.9/pitchTrackWorkbench-ver-0.9.1/php/SQLConnect.inc.php on line 86
+[23-May-2019 19:24:53 UTC] PHP Stack trace:
+[23-May-2019 19:24:53 UTC] PHP   1. {main}() /home/ubuntu/workspace/aaa-team/development/lj/pitchUI/pitchUI-ver.0.17.9/pitchTrackWorkbench-ver-0.9.1/php/main.php:0
+[23-May-2019 19:30:52 UTC] PHP Parse error:  syntax error, unexpected '{' in /home/ubuntu/workspace/aaa-team/development/lj/pitchUI/pitchUI-ver.0.17.9/pitchTrackWorkbench-ver-0.9.1/php/SQLConnect.inc.php on line 41
+[23-May-2019 19:30:52 UTC] PHP Stack trace:
+[23-May-2019 19:30:52 UTC] PHP   1. {main}() /home/ubuntu/workspace/aaa-team/development/lj/pitchUI/pitchUI-ver.0.17.9/pitchTrackWorkbench-ver-0.9.1/php/main.php:0
+[23-May-2019 22:12:54 UTC] PHP Parse error:  syntax error, unexpected 'while' (T_WHILE) in /home/ubuntu/workspace/aaa-team/development/lj/pitchUI/pitchUI-ver.0.17.9/pitchTrackWorkbench-ver-0.9.1/php/main.php on line 376
+[23-May-2019 22:13:10 UTC] PHP Parse error:  syntax error, unexpected 'if' (T_IF) in /home/ubuntu/workspace/aaa-team/development/lj/pitchUI/pitchUI-ver.0.17.9/pitchTrackWorkbench-ver-0.9.1/php/main.php on line 378
+[23-May-2019 22:13:18 UTC] PHP Parse error:  syntax error, unexpected '{' in /home/ubuntu/workspace/aaa-team/development/lj/pitchUI/pitchUI-ver.0.17.9/pitchTrackWorkbench-ver-0.9.1/php/main.php on line 376

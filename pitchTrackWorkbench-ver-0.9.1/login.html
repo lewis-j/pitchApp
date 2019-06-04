@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login to DataBase </title>
+                <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<link rel="stylesheet" href="styles/style.css">
+    </head>
+    <body>
+            <div class="container-fluid">
+               <div class="row header">
+      <img id="logo" class="col-sm-2" src="../img/bearcubs.png" alt="Santa Rosa Bear Cubs Logo">
+                <div class="col-md-8 header-title"> <div>Santa Rosa Jr College</div>
+                <p>Cubs Pitch Data</p></div>
+                
+                <div class="col-md-2 text-right" ><button type="button" class="btn btn-default"><a href="php/logout.php">Logout</a></button></div>
+                
+            </div>
+        
+      </div>
+<div class="container">
+            
+                       
+       <div class="panel panel-default menu">
+  <div class="panel-heading">login screen</div>
+  <div class="panel-body">
+      <form method="post" action="php/main.php">
+          <div class="form-group row" id="username-input">
+              <label for="username" class="col-md-2 col-form-label">Username:</label>
+              <div class="col-md-10">
+              <input class="form-control" type="text" id="username" name="username"  >
+              <small class="form-text text-muted text-warning feedback" hidden>The username you entered is incorrect</small>
+              </div>
+          </div>
+          <div class="form-group row" id="password-input">
+              <label for="password" class="col-md-2 col-form-label">Password:</label>
+  <div class="col-md-10">
+    <input class="form-control" type="password" id="password" name="password" >
+    <small  class="form-text text-muted text-warning feedback" hidden>The password you entered is incorrect</small>
+  </div>
+</div>
+
+   <button type="submit" class="btn btn-primary center-block">Submit</button>
+</form>
+
+
+   </div>
+</div>         
+</div>
+
+
+    </body>
+</html>

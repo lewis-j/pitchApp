@@ -7,17 +7,17 @@ $_id = NULL;
 
 
 // 1. Open connection to MySQL database (using username + password)
-    $mydbserver = 'localhost';
-    $mydbname = 'cloud9_testDB';
-    $mydbuser = 'srjcjimdennis';
-    $mydbpass = '';
-    
-    // NEW: ERROR HANDLING WITH MYSQLI mysqli_report() 
+    $mydbserver = 'localhost:3306';
+    $mydbname = 'lindsgp8_Baseball_Pitch_App';
+    $mydbuser = 'lindsgp8_lindsgp';
+    $mydbpass = 'Lubertson$27';
+
+    // NEW: ERROR HANDLING WITH MYSQLI mysqli_report()
     // NOW I USE try {} catch() {} to INTERCEPT ERRORS
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
     //mysqli_report(MYSQLI_REPORT_ALL);
 
-    // Step 1 of our SQL 5-step program: 
+    // Step 1 of our SQL 5-step program:
     // when we open a connection to mysql we have to keep track of the connection in a variable
     try {
         $myconn = new mysqli(
@@ -42,7 +42,7 @@ $_id = NULL;
 
    echo "<h1>Database Connection Success!</h1>";
    var_dump("Database Connection Success!");
-   
+
 	 // insert into game_pitchers table.
 	// PlayerData from UI
 	 try{
@@ -50,9 +50,9 @@ $_id = NULL;
 	 // Query database to get last game_pitchers table entry.
 	 // Need pitchers_id to make foreign fk_pitchers_id entry in
 	 //   game_pitches table.
-	 $sql = "SELECT `pitchers_id` , `pitcherName` 
-							FROM `srjc_game-pitchers` 
-							ORDER BY pitchers_id DESC 
+	 $sql = "SELECT `pitchers_id` , `pitcherName`
+							FROM `srjc_game-pitchers`
+							ORDER BY pitchers_id DESC
 							LIMIT 1";
 	$statement = $myconn -> prepare($sql);
 	$statement -> execute();
@@ -74,21 +74,21 @@ $_id = NULL;
 			`yCoord`
 			)
 			VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
-			
+
 			$pitchStatement = $myconn -> prepare($sqlGetPitch);
-			
+
 			foreach($object as $value){
 			$pitchStatement -> bind_param("iisiisssssdd",$_id,$pid,$value -> timeStamp, $value-> pitchSpeed,$value ->gameCount->pitchCount,$value->batterHandedness,$value->endPlay,$value->firstPitch,$value->pitchType,$value->play,$value->xCoord,$value->yCoord);
 			$pitchStatement -> execute();
 			}
-		
+
 			$pitchStatement ->close();
-			
-    	
+
+
     }else{
-   $statement -> close(); 	
+   $statement -> close();
     }
-                 
+
 	 } catch(Exception $e) {
         // echo "<pre>";
         // print_r($e);
@@ -101,8 +101,8 @@ $_id = NULL;
         // or do I choose to handle this differently?
         // header "Location: error.html";
     }
-    
-	 
+
+
 
  $myconn-> close();
 

@@ -2,7 +2,7 @@
 <html>
     <head>
         <title>Baseball Pitch Tracker</title>
-      <link rel="stylesheet" href="dependencies/bs/bootstrap.min.css">        
+      <link rel="stylesheet" href="dependencies/bs/bootstrap.min.css">
       <script src="dependencies/jquery-3.3.1.js"></script>
       <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>-->
       <script src="dependencies/bs/bootstrap.min.js"></script>
@@ -99,7 +99,7 @@
 
 </style>
     <body>
-        
+
 <!--<div id="start-menu">-->
 
 <!--    <div id="login-container">      -->
@@ -109,7 +109,7 @@
 <!--      <button onclick='enterLogin()'>Submit</button>-->
 <!--</div>-->
 <!--    </div>-->
-<div id="start-background">      
+<div id="start-background">
      <div id="select-menu" >
          <h3>Select Game Options</h3>
           <div class="form-group">
@@ -119,7 +119,7 @@
         </select>
         </div>
         <div class="form-group" id="game-type-group" style="visibility: hidden;">
-         <p class="form-item game-type">Game Type</p>    
+         <p class="form-item game-type">Game Type</p>
                     <select class="form-item" id="game-type">
                         <option selected disabled value="unselected"><i>Select game type</i></option>
                         <option value="Game">Game</option>
@@ -134,18 +134,18 @@
         </select>
         </div>
             <div class="form-group" id="game-num-group" style="visibility: hidden;">
-         <p class="form-item game-type">Game #</p>    
+         <p class="form-item game-type">Game #</p>
                     <select class="form-item" id="game-num">
                         <option selected value="1">1</option>
                         <option value="2">2</option>
-                     
+
                     </select>
         </div>
             <button class="btn btn-primary" id="start-btn">Start Game</button>
             <button class="btn btn-primary" id="load-btn">Load Last Game</button>
     </div>
-    </div>  
-        
+    </div>
+
 
     <div id="left-nav-menu" class="clear-header">
         <div class="left-menu-item" id="switch-pitcher">Switch Pitcher<i class="fas fa-baseball-ball"></i></div>
@@ -158,16 +158,16 @@
         <h2>Select New Pitcher</h2>
             <select id="new-pitcher-select"></select>
             <button id="enter-new-pitcher">Enter new Pitcher</button>
-        
+
         </div>
-    </div>        
-    
+    </div>
+
 
 <div class="container-fluid">
-  
+
   <div class="row" id="header-title" style="font-size:30px;cursor:pointer"><div id='menu-btn'>&#9776;</div><div id="app-title">SRJC Pitch Tracker</div><div id='fullscreen'><i class="fas fa-expand"></i></div></div>
        <div class="row">
-           
+
 <!--Left Panel Game information display   -->
         <div class="col-sm-2 left-panel">
             <div class="bearcub-logo" onclick="alert('Please Login to Begin a Game')"><img src="img/bearcubs.png" width="111px" height="90px" >
@@ -175,52 +175,52 @@
             <div id="session-game">
             <div class="session-item"><div id="date">
             </div></div>
-            <div class="session-item">    
+            <div class="session-item">
             <h6>Game Type</h6>
             <div id="game-type-dspy">nothing selected</div>
             </div>
-            <div class="session-item">    
+            <div class="session-item">
             <h6>Pitcher</h6>
             <div id="pitcher-name-dspy">nothing selected</div>
             </div>
-            <div class="session-item">    
+            <div class="session-item">
             <h6>Opposing Team</h6>
             <div id="op-team-name-dspy">nothing selected</div>
                 </div>
                 </div>
                 <div id="session-count">
-                <div class="session-item">    
+                <div class="session-item">
             <h6>Strike %</h6>
             <svg id="strike-pie" width="75" height="75"></svg>
                 </div>
-                    
-            <div class="session-item">    
+
+            <div class="session-item">
             <h6>Total Pitches</h6>
             <div id="pitch-count" class="count">0</div>
                 </div>
-            <div class="session-item">    
+            <div class="session-item">
             <h6>Total Balls</h6>
             <div id="total-balls" class="count">0</div>
-            
+
                 </div>
-            <div class="session-item">    
+            <div class="session-item">
             <h6>Total Strikes</h6>
             <div id="total-strikes" class="count">0</div>
                 </div>
-                 <div class="session-item">    
+                 <div class="session-item">
             <h6>Balls / Strikes</h6>
             <div class = "current-count" id="balls">0</div>
              <div class = "current-count" id="strikes">0</div>
-                
+
                 </div>
-                
+
             </div>
-        
-            
+
+
 <img class="batter-ui" id="right-batter" src="img/RHH.png">
         </div>
         <div class="col-sm-8 svg-chart nav-close">
-          <div id="mph-wrapper">  
+          <div id="mph-wrapper">
 <svg id="mph-dropdown"  version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	width="55px" viewBox="70 20 11 105" xml:space="preserve">
 <style type="text/css">
@@ -318,32 +318,32 @@
   <line x1="50%" y1="20%" x2="50%" y2="80%" style="stroke:black;stroke-width:3" />
   <line x1="25%" y1="40%" x2="75%" y2="40%" style="stroke:black;stroke-width:3" />
 </g>
-    
-                
-                
+
+
+
 </svg></div></div>
         <div class="col-sm-2 right-panel nav-close">
-            
+
              <div class="title">Pitch Velocity</div>
                 <div id="mph-ui">
         <h4 id="mph-text">00</h4>
            <p id="mph-title" >mph</p>
         </div>
             <img class="batter-ui" id="left-batter" src="img/LHH.png">
-     
-        
+
+
                        <div class="switch-field batter-switch">
       <div class="title">Batter</div>
       <div id="batter-handedness">
        <input type="radio" id="switch_lhh"  name="switch_handed" value="Left" />
       <label for="switch_lhh">LEFT</label>
-      
+
       <input type="radio" id="switch_rhh" name="switch_handed" value="Right" />
       <label for="switch_rhh">RIGHT</label>
            </div>
     </div>
-        
-     <div class="title">First Pitch</div>    
+
+     <div class="title">First Pitch</div>
       <label class="toggle">
    <input type="checkbox" id="first-pitch">
    <span class="slider-2"></span>
@@ -351,71 +351,71 @@
 
                           <div class="switch-field" id="play">
       <div class=" title">Play</div>
-      
+
       <input type="radio" id="switch_stk" name="switch_play" value="Strike" />
       <label for="switch_stk">Strike</label>
-      
+
       <input type="radio" id="switch_ball" name="switch_play" value="Ball" />
       <label for="switch_ball">Ball</label>
     </div>
 
-     
-           
-   
+
+
+
         <div id="inner-panel">
                <div id="pitch-fields" class="switch-field">
       <div class="title">Pitch Type</div>
-      
+
       <input type="radio" id="switch_FB" name="switch_pitch" value="FB" />
       <label class="pitch-label"  id="label_FB" for="switch_FB">Fast</label>
-      
+
       <input type="radio" id="switch_CH" name="switch_pitch" value="CH" />
       <label id="label_CH" class="pitch-label" for="switch_CH">Change</label>
-      
+
       <input type="radio" id="switch_SL" name="switch_pitch" value="SL" />
       <label class="pitch-label" id="label_SL" for="switch_SL">Slider</label>
-      
+
       <input type="radio" id="switch_CB" name="switch_pitch" value="CB" />
       <label class="pitch-label" id="label_CB" for="switch_CB">Curve</label>
-        
+
       <input type="radio" id="switch_other" name="switch_pitch" value="other" />
       <label class="pitch-label" id="label_OT" for="switch_other">Other</label>
-                   
+
     </div>
-    
+
                 <div id="end-play-options" class="switch-field" >
       <div class="title">End Play</div>
-      
+
         <div class="switch-inputs">
       <input id="switch_w" type="radio" name="switch_end" value="Walk" />
       <label id="label_w" for="switch_w">Walk</label>
-      
+
       <input type="radio" id="switch_h" name="switch_end" value="Hit" />
       <label for="switch_h">Hit</label>
-                           
+
        <input type="radio" id="switch_sOut" name="switch_end" value="Strike Out" />
       <label id="label_sOut" for="switch_sOut">Strike Out</label>
-          </div>         
+          </div>
     </div>
-            
-            
+
+
         <button class="entry" id="data-entry">Enter</button>
         <button type="button" class="entry" id="undo-entry"><i class="fas fa-undo"></i></button>
-     
-
-           
-           </div>   
-
-   
 
 
 
-    
+           </div>
+
+
+
+
+
+
 
 
         </div>
     </div>
-    
+
 </div>
 
 

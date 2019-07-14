@@ -1,7 +1,8 @@
 
 <?php
-include "custom_error.inc.php";
 include "SQLConnect.inc.php";
+include "custom_error.inc.php";
+
 
 
 if(isset($_POST['pitchername'])){
@@ -12,26 +13,26 @@ if(isset($_POST['pitchername'])){
 
 $colors = array("red","blue","green","purple","orange");
 
-        
+
         class TableData{
     public $title;
     public $total;
     public $balls;
     public $strikes;
     public $strikePerc;
-    public $minSp; 
+    public $minSp;
     public $maxSp;
     public $avgSp;
     public $totalBat;
 
-    
-    
-      function __construct( $title, $s, $b, $min, $max, $avg,$tB)  
-    { 
-      
+
+
+      function __construct( $title, $s, $b, $min, $max, $avg,$tB)
+    {
+
                  $t = $s + $b;
-        $this->title = $title;         
-        $this->total = $t; 
+        $this->title = $title;
+        $this->total = $t;
         $this->balls = $b;
         $this->strikes = $s;
         $this->strikePerc = ($t != 0 )?  number_format( ($s/($t))*100 ,1 ) :  0  ;
@@ -45,23 +46,23 @@ $colors = array("red","blue","green","purple","orange");
     public $x;
     public $y;
     public $t;
-    
-      function __construct( $x, $y, $t )  
-    { 
-        $this->x = $x; 
+
+      function __construct( $x, $y, $t )
+    {
+        $this->x = $x;
         $this->y = $y;
         $this->t = $t;
     }
 }
          function createStatement($pitcherName, $option1, $option2, $date, $getOpponent){
-         
-          
+
+
            $pitchT = array("FB","CB","CH","SL","other");
            $dateOption = "";
           if($date != ""){
             $dateOption = "AND `srjc_game-pitchers`.`date` = '{$date}'";
           }
-           
+
 
              $allData = "SELECT ";
                    if($getOpponent){
@@ -73,24 +74,24 @@ $colors = array("red","blue","green","purple","orange");
                       $allData = $allData . "MIN(`srjc_game-pitches`.`pitchspeed`),
                                              MAX(`srjc_game-pitches`.`pitchspeed`),
                                              AVG(`srjc_game-pitches`.`pitchspeed`),";
-                      
+
                     }else{
-                       
-                      
+
+
                       if($option2 != ""){
                         $option2 = "AND ".$option2;
                       }
-                      
+
                       $allData = $allData . "MIN(CASE WHEN  {$option1} {$option2} THEN `srjc_game-pitches`.`pitchspeed` END) as 'allMinSpFB',
                                              MAX(CASE WHEN  {$option1} {$option2} THEN `srjc_game-pitches`.`pitchspeed` END) as 'allMaxSpFB',
                                              AVG(CASE WHEN  {$option1} {$option2} THEN `srjc_game-pitches`.`pitchspeed` END) as 'allAvgSpFB',";
-                                          
-                      $option1 = "AND ".$option1;                       
-                      
-                      
+
+                      $option1 = "AND ".$option1;
+
+
                     }
-                   
-                    
+
+
                    $allData = $allData . "
                     SUM(CASE WHEN  `srjc_game-pitches`.`play` =  'Strike' {$option1} {$option2} THEN 1 ELSE 0 END) as 'allS',
                     SUM(CASE WHEN  `srjc_game-pitches`.`play` =  'Ball' {$option1} {$option2} THEN 1 ELSE 0 END) as 'allB',
@@ -98,9 +99,9 @@ $colors = array("red","blue","green","purple","orange");
                     SUM(CASE WHEN  `srjc_game-pitches`.`endPlay` =  'Strike Out' {$option1} {$option2} THEN 1 ELSE 0 END) as 'allK',
                     SUM(CASE WHEN  `srjc_game-pitches`.`endPlay` =  'Walk' {$option1} {$option2} THEN 1 ELSE 0 END) as 'allW',
                     SUM(CASE WHEN  `srjc_game-pitches`.`endPlay` =  'Hit' {$option1} {$option2} THEN 1 ELSE 0 END) as 'allH',";
-                    
-           
-                    
+
+
+
                     for($i=0; $i < count($pitchT); $i++) {
                        $allData = $allData.
                     "SUM(CASE WHEN  `srjc_game-pitches`.`play` =  'Strike' AND `srjc_game-pitches`.`pitchType` = '{$pitchT[$i]}' {$option1} {$option2} THEN 1 ELSE 0 END) as 'allSFB',
@@ -112,30 +113,30 @@ $colors = array("red","blue","green","purple","orange");
                     if($i != (count($pitchT) - 1)){
                       $allData = $allData.",";
                     }
-                      
+
                     }
-                    
+
                     $allData = $allData."FROM `srjc_game-pitches`
                     INNER JOIN `srjc_game-pitchers` ON `srjc_game-pitches`.`fk_pitchers_id` = `srjc_game-pitchers`.`pitchers_id`
                     WHERE `srjc_game-pitchers`.`pitcherName` = '{$pitcherName}' {$dateOption}";
-                    
+
                     return $allData;
-          } 
-        
-         function createTable($title,$pitcherName, $Data, $myconn, $getOpponent, $showTable3){              
+          }
+
+         function createTable($title,$pitcherName, $Data, $myconn, $getOpponent, $showTable3){
         try{
-          
-        
-   
+
+
+
         $statment = $myconn -> prepare($Data);
-        
+
         $statment -> execute();
         if(!$getOpponent){
         $statment -> bind_result( $allMinSp, $allMaxSp, $allAvgSp,$allS, $allB,$allBat, $allK, $allW, $allH,
-                                  $allSFB, $allBFB, $allMinSpFB,$allMaxSpFB, $allAvgSpFB,$allBatFB, 
-                                  $allSCB, $allBCB, $allMinSpCB,$allMaxSpCB, $allAvgSpCB,$allBatCB, 
-                                  $allSCH, $allBCH, $allMinSpCH,$allMaxSpCH, $allAvgSpCH,$allBatCH,  
-                                  $allSSL, $allBSL, $allMinSpSL,$allMaxSpSL, $allAvgSpSL,$allBatSL, 
+                                  $allSFB, $allBFB, $allMinSpFB,$allMaxSpFB, $allAvgSpFB,$allBatFB,
+                                  $allSCB, $allBCB, $allMinSpCB,$allMaxSpCB, $allAvgSpCB,$allBatCB,
+                                  $allSCH, $allBCH, $allMinSpCH,$allMaxSpCH, $allAvgSpCH,$allBatCH,
+                                  $allSSL, $allBSL, $allMinSpSL,$allMaxSpSL, $allAvgSpSL,$allBatSL,
                                   $allSOT, $allBOT, $allMinSpOT,$allMaxSpOT, $allAvgSpOT,$allBatOT);
         }else{
             $statment -> bind_result( $opponent, $allMinSp, $allMaxSp, $allAvgSp,$allS, $allB,$allBat, $allK, $allW, $allH,
@@ -145,24 +146,24 @@ $colors = array("red","blue","green","purple","orange");
                                       $allSSL, $allBSL, $allMinSpSL,$allMaxSpSL, $allAvgSpSL,$allBatSL,
                                       $allSOT, $allBOT, $allMinSpOT,$allMaxSpOT, $allAvgSpOT,$allBatOT);
         }
-                                  
+
         }catch(Exception $e){
           echo $e;
         }
-        
-                                 
-                               
-                                 
-       
-       
+
+
+
+
+
+
       // echo "<div class='card'>
       //         <h3 class='card-header'>
       //           All Pitches
       //         </h3>
       //         <div class='card-body'>";
-              
-          
-          
+
+
+
         while($statment -> fetch()){
              $tableCollection = array(new TableData("All",$allS, $allB,$allMinSp, $allMaxSp, $allAvgSp,$allBat),
                                  new TableData("FB", $allSFB, $allBFB, $allMinSpFB,$allMaxSpFB, $allAvgSpFB,$allBatFB),
@@ -174,7 +175,7 @@ $colors = array("red","blue","green","purple","orange");
               echo "<div class='col-sm-12'><div class='pitcher-name'>{$pitcherName}</div> <div class='title'>{$title}</div></div>";
               }else{
               echo "<div class='col-sm-12'><div class='pitcher-name'>{$pitcherName}</div> <div class='game-title'>{$title} {$opponent}</div></div>";
-            
+
               }
                           if($showTable3){
           echo "<div class='my-tables row'><table class='game-stat table table-striped table-border  table-sm'>
@@ -184,18 +185,18 @@ $colors = array("red","blue","green","purple","orange");
         <th scope='col'>Strike Outs</th>
         <th scope='col'>Walks</th>
         <th scope='col'>Hits</th>
-        
+
     </tr>
   </thead>
   <tbody>";
-       
+
                  echo  " <tr>
                <td>$allBat</td>
                <td>$allK</td>
                <td>$allW</td>
                <td>$allH</td>
           </tr>
-          
+
           </tbody></table></div>";
           }
 
@@ -223,12 +224,12 @@ $colors = array("red","blue","green","purple","orange");
                 </tr>
                 </tbody>
                 </table>
-                </div>       
-                       
+                </div>
+
   <div class='my-tables col-md-6'><table class='table table-striped table-border table-sm'>
     <thead>
        <tr>
-     
+
       <th scope='col'></th>
       <th scope='col' colspan='3'>Pitch Strike %</th>
     </tr>
@@ -269,37 +270,37 @@ $colors = array("red","blue","green","purple","orange");
                <td>{$tableCollection[$i] -> maxSp}</td>
                <td>{$tableCollection[$i] -> avgSp}</td>
           </tr>";
-           
+
           }
 
           echo "</tbody></table></div>";
 
           echo "</div>";
         }
-        
+
         $statment -> close();
-        
-        
+
+
         // echo "</div></div>";
       }
-      
+
       $datesArray = array();
-        
+
         $allData = "SELECT `date`
                     FROM `srjc_game-pitchers`
                     WHERE `pitcherName` = '{$pitcherName}'";
         $statment = $myconn -> prepare($allData);
-        
+
         $statment -> execute();
-        
+
         $statment -> bind_result($date);
-        
+
         while($statment -> fetch()){
-          
+
           array_push($datesArray, $date);
-        
+
           }
-          
+
           $statment -> close();
 
 $coordArray = array();
@@ -307,7 +308,7 @@ $coordArray = array();
 $arrlength = count($datesArray);
 
 for($x = 0; $x < $arrlength; $x++) {
-$coordSQL = "SELECT `srjc_game-pitches`.`xCoord`,`srjc_game-pitches`.`yCoord`,`srjc_game-pitches`.`pitchType`   
+$coordSQL = "SELECT `srjc_game-pitches`.`xCoord`,`srjc_game-pitches`.`yCoord`,`srjc_game-pitches`.`pitchType`
                     FROM `srjc_game-pitches`
                     INNER JOIN `srjc_game-pitchers` ON `srjc_game-pitches`.`fk_pitchers_id` = `srjc_game-pitchers`.`pitchers_id`
                     WHERE `srjc_game-pitchers`.`pitcherName` = '{$pitcherName}' AND `srjc_game-pitchers`.`date` = '{$datesArray[$x]}'";
@@ -343,42 +344,42 @@ array_push($coordArray, $tempArray);
         <div class="left-menu-item" id="edit-roster">Edit Roster<i class="fas fa-baseball-ball"></i></div>
         <div class="left-menu-item" id="pitch-tracker">Pitch Tracker<i class="fas fa-baseball-ball"></i></div>
     </div>
-      
+
       <div class="container-fluid main">
         <div class="row" id="header-title" style="font-size:30px;cursor:pointer"><div id='menu-btn'>&#9776;</div><button id="logout" type="button" class="btn btn-default"><a href="logout.php">Logout</a></button></div>
             <div class="row" id="header">
-              
+
       <img id="logo" class="col-sm-2" src="../../img/bearcubs.png" alt="Santa Rosa Bear Cubs Logo">
                 <div class="col-md-8 header-title"> <div>Santa Rosa Jr College</div>
                 <p>Cubs Pitch Data</p></div>
-                
-                
-                
+
+
+
             </div>
         <div class="row">
           <div class="card col-sm-12 menu">
   <div class="card-body">
     <div class="card-text">
-      
+
       <form method="post" action="main.php">
          <div class="form-group">
     <label for="pitcherSelect">Select Pitcher</label>
     <select class="form-control" id="pitcherSelect" name="pitchername">
     	<?php
-    	   $sql     = "SELECT `pitcher_name`, `year`, `season` 
-							FROM `srjc_pitcher-roster` 
+    	   $sql     = "SELECT `pitcher_name`, `year`, `season`
+							FROM `srjc_pitcher-roster`
 							ORDER BY `year` DESC";
 		$statement = $myconn -> prepare($sql);
 		$statement -> execute();
 		$statement -> bind_result($Name, $year, $season);
-		
+
     	if($pitcherName == ""){
     	  ?>
     	    <option disabled selected><i>Select Pitcher</i></option>
     	    <?php
     	}
     	while($statement->fetch()){
-    		
+
     		if($Name === $pitcherName){
     	    ?>
     	    <option selected><?php echo $Name; ?></option>
@@ -388,34 +389,34 @@ array_push($coordArray, $tempArray);
     		<option><?php echo $Name; ?></option>
     		<?php
     		}
-         
-    		
+
+
     	}
     	$statement->close();
-    	
-    	
+
+
     ?>
     </select>
   </div>
 
    <button type="submit" class="btn btn-primary center-block">Submit</button>
 </form>
-      
-      
-      
+
+
+
     </div>
   </div>
 </div>
 </div>
-          
+
         <?php
         echo "<h1 id='pitcher-title'>{$pitcherName}</h3>";
-        
-                    
-       echo "<div class='row table-group'><div class='col-md-12'>";  
+
+
+       echo "<div class='row table-group'><div class='col-md-12'>";
                     $statement = createStatement($pitcherName,"","","",false);
                     createTable("All Pitches",$pitcherName, $statement, $myconn,false, true);
-                   echo "</div></div>"; 
+                   echo "</div></div>";
        echo "<div class='row table-group'><div class='col-md-12'>";
        $statement = createStatement($pitcherName,"`srjc_game-pitches`.`firstpitch` =  '1'","","",false);
                     createTable("First Pitches",$pitcherName,$statement, $myconn, false, false);
@@ -434,7 +435,7 @@ array_push($coordArray, $tempArray);
                     createTable("{$datesArray[$x]} ",$pitcherName,$statement, $myconn,true, true);
           ?>
          </div>
-      
+
             <div class="chart-data col-md-5">
                       <div class="chart-key">
                 <table class='table table-striped table-border table-sm key2'>
@@ -461,7 +462,7 @@ array_push($coordArray, $tempArray);
                 </tr>
                 </tbody>
                 </table>
-                </div>  
+                </div>
           <svg class="cust-svg" width="432px" height="473px" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g id="mySVG<?php echo $x ?>">
   <rect id="rect"  x="2%" y="0" width="96%" height="100%"
@@ -476,15 +477,15 @@ array_push($coordArray, $tempArray);
         <script>
           plotPoints(<?php echo json_encode($coordArray[$x]);?>,<?php echo json_encode($colors); ?>, <?php echo $x; ?> );
         </script>
-          
+
           <?php
         echo "</div>";
-    
-          }    
+
+          }
         echo "</div>";
-      
+
         include "SQLDisconnect.inc.php";
         ?>
-     
+
     </body>
 </html>

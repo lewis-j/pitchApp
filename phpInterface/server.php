@@ -19,17 +19,17 @@ var_dump($object);
 	$gameType = $object -> gameType;// PlayerData from UI
 
 // 1. Open connection to MySQL database (using username + password)
-    $mydbserver = 'localhost';
-    $mydbname = 'cloud9_testDB';
-    $mydbuser = 'srjcjimdennis';
-    $mydbpass = '';
-    
-    // NEW: ERROR HANDLING WITH MYSQLI mysqli_report() 
+$mydbserver = 'localhost:3306';
+$mydbname = 'lindsgp8_Baseball_Pitch_App';
+$mydbuser = 'lindsgp8_lindsgp';
+$mydbpass = 'Lubertson$27';
+
+    // NEW: ERROR HANDLING WITH MYSQLI mysqli_report()
     // NOW I USE try {} catch() {} to INTERCEPT ERRORS
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
     //mysqli_report(MYSQLI_REPORT_ALL);
 
-    // Step 1 of our SQL 5-step program: 
+    // Step 1 of our SQL 5-step program:
     // when we open a connection to mysql we have to keep track of the connection in a variable
     try {
         $myconn = new mysqli(
@@ -54,7 +54,7 @@ var_dump($object);
 
    echo "<h1>Database Connection Success!</h1>";
    var_dump("Database Connection Success!");
-   
+
 	 // insert into game_pitchers table.
 	 if ($objType == "1") {	// PlayerData from UI
 	 try{
@@ -69,12 +69,12 @@ var_dump($object);
 				`gameType`
 				)
 				VALUES (?,?,?,?,?,?,?,?)";
-				
+
 				$statement = $myconn -> prepare($sql);
 				 $statement -> bind_param("isssssss",$_id ,$date, $time, $opponent, $gameNumber, $pitcherName, $startingPitcher, $gameType);
 				 $statement -> execute();
                  $statement -> close();
-                 
+
 	 } catch(Exception $e) {
         // echo "<pre>";
         // print_r($e);
@@ -87,10 +87,10 @@ var_dump($object);
         // or do I choose to handle this differently?
         // header "Location: error.html";
     }
-    
+
 	 }
-   
-   
+
+
 
     // 5. Close connection
     $myconn -> close();

@@ -3,24 +3,25 @@
 /*global d3*/
 $(document).ready(function() {
    //colors for pitch radio buttons and cirlce elements
-  // [FASTBALL, CHANGEUP, SLIDER, CURVEBALL, OTHER ] 
+  // [FASTBALL, CHANGEUP, SLIDER, CURVEBALL, OTHER ]
   const pitchColors = ["red", "blue", "green", "purple", "orange"];
-  
+
 document.body.style.setProperty('--FB-color',pitchColors[0]);
 document.body.style.setProperty('--CH-color',pitchColors[1]);
 document.body.style.setProperty('--SL-color',pitchColors[2]);
 document.body.style.setProperty('--CB-color',pitchColors[3]);
 document.body.style.setProperty('--OT-color',pitchColors[4]);
 
-  // object structure for sql database 
+  // object structure for sql database
   var PlayerData = {
     // game session data(persist through game)
     objType: "1",
     /* jad */
     startingPitcher: true,
     pitchCount: 0,
+    //        player_id: "sql index"
     //        gameType : "GAME, InterSquad, OR BULLPEN ",
-    //        date : "CURRENT DATE", 
+    //        date : "CURRENT DATE",
     //        time :"Current Time",
     //        team: "SRJC TEAM",
     //        opponent: "RIVAL TEAM",
@@ -61,11 +62,11 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
   //pitcher id for pouchDB index
   var pitcher_id;
   var arcs, arc, pie, paths, strikePerc;
-  
+
   renderPie([0,0]);
   change([0,1]);
 
-  
+
   pouchHasPitcher().then((hasPitcher)=>{
       if(!hasPitcher){
         console.log("no data");
@@ -90,7 +91,7 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
       document.getElementById("switch_ball").checked = true;
          if (gameCount.ballCount == 3) {
           // document.getElementById('label_w').classList.add('warning_indicator');
-          
+
       }
     }
     else {
@@ -100,7 +101,7 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
         // document.getElementById('label_sOut').classList.add('warning_indicator');
       }
     }
-    
+
           if (redoHandlerInit) {
         $('#data-entry').text("Enter");
         $('#data-entry').off('click');
@@ -236,7 +237,6 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
       /* Begin jad */
       if (gl_newPitcher) /*switching new pitch to boolean 0=false 1=true*/ {
         gl_newPitcher = false;
-        PlayerData._id = new Date();
         pitchObject._id = new Date();
         pitchObject.pitcher_id = PlayerData._id;
 
@@ -255,6 +255,7 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
       else {
         pitchObject._id = new Date();
         pitchObject.pitcher_id = PlayerData._id;
+        console.log("pitch object:", pitchObject);
         storePouch(pitchObject).catch((err) => {
           console.log(err);
         });
@@ -266,7 +267,7 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
 
       //updatedata on left panel ui
       updateGameCountUI(gameCount);
-     
+
 
 
     }
@@ -337,7 +338,7 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
           .then(res => {
             console.log("pitchData length: ", pitchData.length);
             // console.log("response: ", res.rows);
-            //     //place deleted pitch data in temporary array 
+            //     //place deleted pitch data in temporary array
             if (pitchData.length == 0) {
 
               updateGameCountUI(zeroGameCount(gameCount));
@@ -374,7 +375,7 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
           redoHandlerInit = true;
 
         }
-      //Remove data from array and erase circle    
+      //Remove data from array and erase circle
       lastElement.parentNode.removeChild(lastElement);
     }
   });
@@ -384,7 +385,7 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
 
 
       delete redoPitch[redoPitch.length - 1].pitchData._rev;
-         
+
 
       gameCount = redoPitch[redoPitch.length - 1].pitchData.gameCount;
       updateGameCountUI(gameCount);
@@ -443,21 +444,21 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
   function resetBatterStance() {
 
     //    document.getElementById('right-batter').style.backgroundColor = "white";
-    //    document.getElementById('right-batter').style.color = "black"; 
+    //    document.getElementById('right-batter').style.color = "black";
     //    document.getElementById('left-batter').style.backgroundColor = "white";
-    //    document.getElementById('left-batter').style.color = "black"; 
+    //    document.getElementById('left-batter').style.color = "black";
     document.getElementById("switch_rhh").checked = false;
     document.getElementById("switch_lhh").checked = false;
     document.getElementById('right-batter').style.display = "none";
     document.getElementById('left-batter').style.display = "none";
   }
 
-  var pitcherNames = [];
+  var pitchersData = [];
 
   getPouchRoster("PITCHERS").then((res) => {
-
+    console.log("items", res);
     res.forEach((item) => {
-      pitcherNames.push(item.pitcher_name);
+      pitchersData.push(item);
       $('#pitcher-name').append("<option>" + item.pitcher_name + "</option");
 
     });
@@ -485,7 +486,7 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
 
 
 
-  // Open numerical keybaord    
+  // Open numerical keybaord
   $('#HUD-2 g ').click(function(event) {
 
     //Assign value from first click
@@ -548,9 +549,10 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
   $('#start-btn').click(() => {
 var valid = true;
   if((document.getElementById("pitcher-name").selectedIndex-1)!= -1){
-    
-    PlayerData.playerName = pitcherNames[document.getElementById("pitcher-name").selectedIndex-1];
-    
+
+    PlayerData.playerName = pitchersData[document.getElementById("pitcher-name").selectedIndex-1].pitcher_name;
+    PlayerData._id = pitchersData[document.getElementById("pitcher-name").selectedIndex-1]._id;
+
     if((document.getElementById("game-type").selectedIndex-1)!= -1){
     PlayerData.gameType = $('#game-type').val();
     if($('#game-type').val() == "Game"){
@@ -558,14 +560,14 @@ var valid = true;
         PlayerData.opponent = $('#op-team-name').val();
         PlayerData.gameNum = $('#game-num').val()
       }else{
-         document.getElementById("op-team-name").classList.add('ui_invalid'); 
+         document.getElementById("op-team-name").classList.add('ui_invalid');
          valid = false;
       }
     }else{
       PlayerData.opponent = "SRJC";
       PlayerData.gameNum = "1";
     }
-    
+
     }else{
       document.getElementById("game-type").classList.add('ui_invalid');
     valid = false;
@@ -574,7 +576,7 @@ var valid = true;
     document.getElementById("pitcher-name").classList.add('ui_invalid');
     valid = false;
   }
-  
+
     if(valid){
 
     gl_newPitcher = true; /* jad */
@@ -582,12 +584,12 @@ var valid = true;
     document.getElementById('first-pitch').checked = true;
     PlayerData.objType = "1";
     PlayerData.date = getTodaysDate("yyyy/mm/dd");
-    PlayerData.timeStamp = getCurrentTime(); 
+    PlayerData.timeStamp = getCurrentTime();
     updateLeftPanel(PlayerData, { gameCount });
     }
-  
+
   });
-  
+
   $('#pitcher-name').change((e)=>{
     $('#game-type-group').css('opacity','1');
     $('#game-type-group').css('visibility','visible');
@@ -595,7 +597,7 @@ var valid = true;
   $('#pitcher-name').click((e)=>{
     document.getElementById("pitcher-name").classList.remove('ui_invalid');
   });
-  
+
   $('#game-type').change((e)=>{
  if( e.target.value == "Game"){
    $('#op-team-group').css('opacity','1');
@@ -671,26 +673,26 @@ $('#op-team-name').change((e)=>{
     updateGameCountUI(pitchObj.gameCount);
 
   }
-  
+
   function renderPie(data){
-      
+
 
     var svg = d3.select("#strike-pie"),
          width = svg.attr("width"),
          height = svg.attr("height"),
         radius = Math.min(width, height) / 2,
         g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-        
+
         g.append("circle")
                           .attr("cx", 0)
                           .attr("cy", 0)
                           .attr("r", radius)
                           .attr("fill", "#F1F1F1");
-        
-        
+
+
         strikePerc = svg.append("text").attr(
 									"transform", "translate(" + width/2 + "," + height/5 + ")")
-									
+
    .attr('dy', '2em')
      .attr("text-anchor", "middle")
      .style("font-size", "15px")
@@ -714,7 +716,7 @@ $('#op-team-name').change((e)=>{
                 .enter()
                 .append("g")
                 .attr("class", "arc");
-                
+
         arcs.transition()
       .duration(500)
       .attr("fill", function(d, i) { return color(i); })
@@ -727,8 +729,8 @@ $('#op-team-name').change((e)=>{
             return color(i);
         })
         .attr("d", arc);
-        
-    paths = svg.selectAll('path');    
+
+    paths = svg.selectAll('path');
   }
 function change(data){
     var perc = 0;
@@ -736,11 +738,11 @@ function change(data){
     paths.data(pie(data));
     paths.transition().duration(750).attrTween("d", arcTween); // redraw the arcs
     if(total!=0){
-    perc = ((data[0] / total) * 100);  
+    perc = ((data[0] / total) * 100);
     }
-    
+
     strikePerc.text(perc.toFixed(1) + "%");
-    
+
 
 }
 
@@ -763,14 +765,14 @@ function arcTween(a) {
     $('#strikes').text(x.strikeCount);
      change([x.totalStrikes, x.totalBalls]);
   }
-  
-  
+
+
   $('#switch_stk').click(()=>{
     if(gameCount.strikeCount >= 2){
-      
+
       // document.getElementById('label_sOut').classList.add('warning_indicator');
     }
-    
+
   });
 
   $('[name="switch_end"]').on("click", (e) => {
@@ -791,18 +793,18 @@ function arcTween(a) {
   $('#switch-pitcher').click(function() {
 
 
-   
+
     $('#select-pitcher-screen').css('width', '83vw');
     $('#select-pitcher-screen').css('left', '17vw');
-    
+
     if(!pitcherSelectInit){
       pitcherSelectInit = true;
-      pitcherNames.forEach((pitcher) => {
-        $('#new-pitcher-select').append(`<option>${pitcher}</option`);
+      pitchersData.forEach((pitcher) => {
+        $('#new-pitcher-select').append(`<option>${pitcher.pitcher_name}</option`);
     });
     }
 
-    
+
   });
 
   $('#transfer-data').click(() => {
@@ -824,7 +826,8 @@ function arcTween(a) {
   });
 
   $('#enter-new-pitcher').click(() => {
-    PlayerData.playerName = pitcherNames[document.getElementById("new-pitcher-select").selectedIndex];
+    PlayerData.playerName = pitchersData[document.getElementById("new-pitcher-select").selectedIndex].pitcher_name;
+    PlayerData._id =  pitchersData[document.getElementById("new-pitcher-select").selectedIndex]._id;
     PlayerData.startingPitcher = false;
 
     //clear pitch graph
@@ -847,7 +850,7 @@ function arcTween(a) {
     removeMenuListeners();
     setTimeout(() => { document.getElementById('select-pitcher-screen').style.left = "17vw"; }, 1000);
 
-    //update UI 
+    //update UI
     resetBatterStance();
     $('#pitcher-name-dspy').text(PlayerData.playerName);
     gl_newPitcher = true; /* jad */
@@ -862,7 +865,7 @@ function arcTween(a) {
       document.getElementById("left-nav-menu").style.left = "0px";
       $(".nav-close").get(0).addEventListener("click", closeLeftMenu, true);
       $(".nav-close").get(1).addEventListener("click", closeLeftMenu, true);
-   
+
     }
     else {
 
@@ -933,7 +936,7 @@ $('#fullscreen').click((e)=>{
      GoOutFullscreen($('body').get(0));
 e.target.classList.remove("fa-compress");
 e.target.classList.add("fa-expand");
-    
+
   }else{
     GoInFullscreen($('body').get(0));
     e.target.classList.remove("fa-expand");

@@ -5,17 +5,17 @@
 var pitchersDB = new PouchDB('pitchers');
 var pitchesDB = new PouchDB('pitch');
 
-function getPouchRoster(method){
+function getPouchRoster(){
 
 const db = new PouchDB('roster', { skip_setup: true });
  var year, season;
 // db.destroy();
 
 
-return new Promise ((response,rej)=>{ 
-  
+return new Promise ((response,rej)=>{
+
   db.info().then((res)=>{
-  
+
   return new Promise((resolve, reject)=>{
     if(res.doc_count === 0){
         resolve();
@@ -47,7 +47,7 @@ return new Promise ((response,rej)=>{
   });
 })
   .then((res) => {
-    return loadSQL(method);
+    return loadSQL();
   }).then((obj)=> {
      return db.bulkDocs(obj);
   }).then(()=>{
@@ -71,51 +71,51 @@ return new Promise ((response,rej)=>{
     });
      }).then((found)=>{
    response(found.docs)
-   
+
   })
   .catch(e => {
     rej("Error in pouchDBTransfer: "+e);
   });
   });
-  
 
-  
+
+
 }
 
 function getPouchPitcher(){
-  
+
       return pitchersDB.allDocs({include_docs: true, limit: 1, descending:true})
          .then((res)=>{
-            return res.rows[0].doc; 
+            return res.rows[0].doc;
     });
   }
-  
+
 function pouchHasPitcher(){
    return pitchersDB.allDocs({include_docs: true, limit: 1, descending:true})
          .then((res)=>{
-            return res.total_rows != 0; 
+            return res.total_rows != 0;
     });
-  
-} 
-  
+
+}
+
 function getPouchPitches(id){
   return pitchesDB.createIndex({
        index: {
          fields:['pitcher_id']
        }
      }).then((res)=>{
-       
+
        return pitchesDB.find({
       selector: {
         pitcher_id: id
       }
     })
-       
-       
+
+
      });
-  
-  
-}  
+
+
+}
 
 function storePouch(data){
   console.log(data.objType);
@@ -126,7 +126,7 @@ function storePouch(data){
 }
 
 function transferPouchToSql(){
-  
+
     // pitchesDB.allDocs({include_docs: true}).then((res)=>{
     //     console.log("returned docs: ", res);
     //   });
@@ -134,27 +134,27 @@ function transferPouchToSql(){
     pitchersDB.allDocs({include_docs: true})
   .then((res)=>{
     console.log(res.total_rows);
-    
+
     if(res.total_rows === 0){
       pitchesDB.allDocs({include_docs: true}).then((res)=>{
         console.log("returned docs: ", res);
       });
     }
-    
+
       return res.rows.reduce((promise, docItem)=>{
         console.log("docitem",docItem.doc);
         return promise.then((res)=>{
            return storeData(docItem.doc);
-        
+
         }).then((res)=>{
-          
+
           return pitchesDB.createIndex({
                       index: {
                       fields: ['pitcher_id']
                   }
                 });
-          
-          
+
+
         }).then(function () {
                 return pitchesDB.find({
                         selector: {
@@ -167,11 +167,11 @@ function transferPouchToSql(){
              console.log("response from bulk store:", res);
            });
         });
-        
-        
+
+
       }, Promise.resolve());
-       
-  
+
+
   }).then((res)=>{
     console.log("db destroyed");
     pitchersDB.destroy().then((res)=>{
@@ -182,9 +182,9 @@ function transferPouchToSql(){
  pitchesDB = new PouchDB('pitch');
     });
     pass("Success!");
-    
+
   }).catch((error)=>{
-    
+
     console.log("no pitchers saved!:",error);
     fail(error);
   });

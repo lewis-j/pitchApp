@@ -31,7 +31,7 @@ body {
 
 .my-tables{
 	padding: 5px;
-	
+
 }
 
 .table-group{
@@ -40,7 +40,7 @@ body {
 	box-shadow: 5px 10px 30px #d1d1d1;
 	margin-top: 10px;
 	background-color: white;
-	
+
 }
 .card{
 	color: black;
@@ -50,7 +50,7 @@ body {
 	width: 30vw;
 	height: calc(30vw * 1.094);
 	margin-top: 2%;
-	margin-left:15%;	
+	margin-left:15%;
 	border: 1px solid black;
 		box-shadow: 5px 10px 15px #d1d1d1;
 }
@@ -66,7 +66,7 @@ body {
 .legend{
 	margin-top:5px;
 	margin-bottom:5px;
-	
+
 }
 
 .legend-item{
@@ -99,7 +99,7 @@ body {
 }
 
 .chart-key{
-	position: absolute; 
+	position: absolute;
 	top:80px;
 }
 
@@ -129,7 +129,7 @@ body {
 .game-title{
 	text-align:center;
 	font-size: 30px;
-	
+
 }
 
 .title{
@@ -139,10 +139,19 @@ body {
 
 .header {
 background-color: 	#f8fbff;
-	
+
 }
 
 .panel-default>.panel-heading {
 	background-color: #212529;
 	color:white;
+}
+
+.seasons-info {
+	border: 1px solid black;
+	border-radius: 15px;
+	box-shadow: 5px 10px 15px black;
+	text-align: center;
+padding: 32px;
+font-size: 24px;
 }

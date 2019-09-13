@@ -73,7 +73,7 @@ if(xhr.status==200){
 
 }
 
-  function loadSQL(method){
+  function loadSQL(){
 
          return new Promise(function (resolve, reject){
 
@@ -97,7 +97,7 @@ if(xhr.status==200){
 }
          xhr.open("POST", "phpInterface/server_get.php");
          //xhr.setRequestHeader("Content-Type", "application/json");
-         xhr.send(method);
+         xhr.send();
 
   });
   }

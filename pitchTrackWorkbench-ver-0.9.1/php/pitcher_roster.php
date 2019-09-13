@@ -3,13 +3,14 @@
 include "custom_error.inc.php";
 include "SQLConnect.inc.php";
 
-   $sql     = "SELECT `pitcher_name`, `year`, `season` 
-							FROM `srjc_pitcher-roster` 
-							ORDER BY `year` DESC";
+   $sql     = "SELECT `srjc_pitcher-roster`.`pitcher_name`,`srjc_team_list`.`year`, `srjc_team_list`.`season`
+   FROM `srjc_pitcher-roster`
+   INNER JOIN `srjc_team_list` ON `srjc_pitcher-roster`.`team_id` = `srjc_team_list`.`team_id`
+   ORDER BY `srjc_team_list`.`year` DESC";
 		$statement = $myconn -> prepare($sql);
 		$statement -> execute();
 		$statement -> bind_result($pitcherName, $year, $season);
-		
+
 
 ?>
 <!DOCTYPE html>
@@ -32,16 +33,16 @@ include "SQLConnect.inc.php";
       <img id="logo" class="col-sm-2" src="../img/bearcubs.png" alt="Santa Rosa Bear Cubs Logo">
                 <div class="col-md-8 header-title"> <div>Santa Rosa Jr College</div>
                 <p>Cubs Pitch Data</p></div>
-                
+
                 <div class="col-md-2 text-right" ><button type="button" class="btn btn-default"><a href="logout.php">Logout</a></button></div>
-                
+
             </div>
-        
+
       </div>
 <div class="container fluid">
   <div class='row'><div class='col-md-12'>
           <div class="panel panel-default menu">
- 
+
   <div class="panel-body">
       <form method="post" action="main.php">
          <div class="form-group">
@@ -51,7 +52,7 @@ include "SQLConnect.inc.php";
     	while($statement->fetch()){
     		?>
          <option><?php echo $pitcherName; ?></option>
-    		<?php	
+    		<?php
     	}
     ?>
     </select>
@@ -60,9 +61,9 @@ include "SQLConnect.inc.php";
    <button type="submit" class="btn btn-primary center-block">Submit</button>
 </form>
    </div>
-</div>         
+</div>
 
-</div> 
+</div>
 </div>
 </div>
 <?php

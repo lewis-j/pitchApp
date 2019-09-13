@@ -1,6 +1,5 @@
 <?php
 
-$request = file_get_contents("php://input");
 
 class pitcher {
 
@@ -18,10 +17,10 @@ class pitcher {
 
 
 	// 1. Open connection to MySQL database (using username + password)
-	$mydbserver = 'localhost:3306';
-	$mydbname = 'lindsgp8_Baseball_Pitch_App';
-	$mydbuser = 'lindsgp8_lindsgp';
-	$mydbpass = 'Lubertson$27';
+  $mydbserver = 'localhost';
+  $mydbname = 'baseball_app';
+  $mydbuser = 'root';
+  $mydbpass = 'root';
 
         // NEW: ERROR HANDLING WITH MYSQLI mysqli_report()
     // NOW I USE try {} catch() {} to INTERCEPT ERRORS
@@ -50,15 +49,16 @@ class pitcher {
     }
 
 
-if($request === "PITCHERS"){
+
 
 
 
 
 	 try{
 
-        $allData = "SELECT `pitcher_id`, `pitcher_name`, `year`, `season`
-        FROM `srjc_pitcher-roster`";
+        $allData = "SELECT `srjc_pitcher-roster`.`pitcher_id`, `srjc_pitcher-roster`.`pitcher_name`, `srjc_team_list`.`year`, `srjc_team_list`.`season`
+        FROM `srjc_pitcher-roster`
+        INNER JOIN `srjc_team_list` ON `srjc_pitcher-roster`.`team_id` = `srjc_team_list`.`team_id`";
         $statement = $myconn -> prepare($allData);
         $arrayObject = array();
 
@@ -95,6 +95,6 @@ if($request === "PITCHERS"){
     }
 
 
-}
+
 
 ?>

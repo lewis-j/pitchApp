@@ -7,11 +7,10 @@ $_id = NULL;
 
 
 // 1. Open connection to MySQL database (using username + password)
-    $mydbserver = 'localhost:3306';
-    $mydbname = 'lindsgp8_Baseball_Pitch_App';
-    $mydbuser = 'lindsgp8_lindsgp';
-    $mydbpass = 'Lubertson$27';
-
+$mydbserver = 'localhost:3306';
+$mydbname = 'baseball_app';
+$mydbuser = 'root';
+$mydbpass = 'root';
     // NEW: ERROR HANDLING WITH MYSQLI mysqli_report()
     // NOW I USE try {} catch() {} to INTERCEPT ERRORS
     mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);

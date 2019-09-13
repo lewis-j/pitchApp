@@ -19,13 +19,14 @@
         <p>Please use the form to edit/add a row.</p>
         <!-- load all rows from table -->
         <?php
-        $team_id = $_GET["team_id"];
+
+        $id = $GET['id'];
         // make sure an id passed in querystring ?id=#
         if ( isset($_GET["id"]) ) {
             // Define SQL statement
-            $mysql = "SELECT  `pitcher_id`, `pitcher_name`
-                      FROM  `srjc_pitcher-roster`
-                      WHERE `pitcher_id` = ?";
+            $mysql = "SELECT  `year`, `season`
+                      FROM  `srjc_team_list`
+                      WHERE `team_id` = ?";
 
             // send templated text of my SQL command to MySQL
             $mystatement = $myconn -> prepare( $mysql );
@@ -37,24 +38,35 @@
             $mystatement -> execute();
 
             // Bind results: id, name, address, hours
-            $mystatement -> bind_result($myid, $mypitcher_name);
+            $mystatement -> bind_result($year, $season);
 
             // show found row if any in form
             if ( $mystatement -> fetch() ) {
                 // after we call fetch(), our bound variables
                 // contain the column values for the row we got
-                $mypitcher_name = htmlspecialchars($mypitcher_name);
-                $myid = htmlspecialchars($myid);
+                $year = htmlspecialchars($year);
+                $season = htmlspecialchars($season);
             } else {
                 // if nothing found, prepare empty vars for new item
-                $mypitcher_name = '';
-                $myid = 0;
+                $year = '';
+                $season = 0;
             }
-            print "<form method='post' action='edit-save.php'>";
-            print "<label for='pitcher_name'>Pitcher Name</label>";
-            print "<input value='$mypitcher_name' name='pitcher_name' id='pitcher_name'><br>";
-            print "<input value='$myid' name='id' type='hidden'><br>";
-            print "<input value='$team_id' name='team_id' type='hidden'><br>";
+            print "<form method='post' action='edit-team-save.php'>";
+            print "<select name='season'>
+                  <option value='Fall'>Fall</option>
+                  <option value='Spring'>Spring</option>
+                  </select>";
+            print "<select name='year'>";
+                $today = getdate();
+                $optionYear = $today['year'];
+                $optionYear = intval($optionYear);
+            for($i=0; $i<=3; $i++){
+                $adjustedYear = $optionYear+$i;
+
+                    print "<option value='$adjustedYear'> $adjustedYear </option>";
+                  }
+            print "</select>
+                   <input value=$id name='id' type='hidden'><br>";
             print "<input type='submit' value='Save'>";
             print "</form>";
         }

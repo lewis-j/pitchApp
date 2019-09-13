@@ -1,8 +1,6 @@
 <?php
 $request = file_get_contents("php://input");
 $object = json_decode($request);
-include "../pitchTrackWorkbench-ver-0.9.1/php/custom_error.inc.php";
-include "../pitchTrackWorkbench-ver-0.9.1/php/SQLConnect.inc.php";
 
 $objType = $object->objType;
 	$_id = NULL;
@@ -20,9 +18,9 @@ var_dump($object);
 
 // 1. Open connection to MySQL database (using username + password)
 $mydbserver = 'localhost:3306';
-$mydbname = 'lindsgp8_Baseball_Pitch_App';
-$mydbuser = 'lindsgp8_lindsgp';
-$mydbpass = 'Lubertson$27';
+$mydbname = 'baseball_app';
+$mydbuser = 'root';
+$mydbpass = 'root';
 
     // NEW: ERROR HANDLING WITH MYSQLI mysqli_report()
     // NOW I USE try {} catch() {} to INTERCEPT ERRORS

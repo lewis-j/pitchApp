@@ -3,32 +3,32 @@
 $(document).ready(function() {
 
 	  document.getElementById("left-nav-menu").style.left = "-18vw";
-	
+
   $('#menu-btn').click(function() {
 
     if (document.getElementById("left-nav-menu").style.left == "-18vw") {
       document.getElementById("left-nav-menu").style.left = "0px";
       $(".main").get(0).addEventListener("click", closeLeftMenu, true);
       $(".nav-close").get(1).addEventListener("click", closeLeftMenu, true);
-   
+
     }
     else {
 
       closeAllMenus();
     }
-    
-    
+
+
 
   });
-  
+
   $('#edit-roster').click((e)=>{
-       window.location.href = "main-list.php";	
+       window.location.href = "season_selection_menu.php";
   });
-  
+
     $('#pitch-tracker').click((e)=>{
-       window.location.href = "../../index.html";	
+       window.location.href = "../../index.html";
   });
-  
+
   function closeAllMenus() {
     document.getElementById("left-nav-menu").style.left = "-18vw";
     removeMenuListeners();
@@ -48,6 +48,5 @@ $(document).ready(function() {
 
   }
 
-	
-});
 
+});

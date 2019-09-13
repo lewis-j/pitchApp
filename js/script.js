@@ -455,7 +455,7 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
 
   var pitchersData = [];
 
-  getPouchRoster("PITCHERS").then((res) => {
+  getPouchRoster().then((res) => {
     console.log("items", res);
     res.forEach((item) => {
       pitchersData.push(item);

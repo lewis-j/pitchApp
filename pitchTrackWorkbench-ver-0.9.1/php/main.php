@@ -366,9 +366,10 @@ array_push($coordArray, $tempArray);
     <label for="pitcherSelect">Select Pitcher</label>
     <select class="form-control" id="pitcherSelect" name="pitchername">
     	<?php
-    	   $sql     = "SELECT `pitcher_name`, `year`, `season`
-							FROM `srjc_pitcher-roster`
-							ORDER BY `year` DESC";
+    	   $sql     = "SELECT `srjc_pitcher-roster`.`pitcher_name`,`srjc_team_list`.`year`, `srjc_team_list`.`season`
+         FROM `srjc_pitcher-roster`
+         INNER JOIN `srjc_team_list` ON `srjc_pitcher-roster`.`team_id` = `srjc_team_list`.`team_id`
+				 ORDER BY `srjc_team_list`.`year` DESC";
 		$statement = $myconn -> prepare($sql);
 		$statement -> execute();
 		$statement -> bind_result($Name, $year, $season);

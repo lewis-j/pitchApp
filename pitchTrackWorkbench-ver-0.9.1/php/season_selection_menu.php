@@ -38,15 +38,15 @@
         ?>
           <div class="container">
               <div class="row">
-
-
-
-
         <?php
         while ( $mystatement -> fetch() ) {
-            echo "<div class='col-md-12 seasons-info'><a href='main-list.php?id=$id'><h4>$year</h4> <h5>$season</h5></a></div>";
+            echo "<div class='col-md-12 seasons-info'><a href='main-list.php?id=$id'><h4>$year</h4> <h5>$season</h5></a>
+                  <a class='button' href='edit-team.php?id=$id'>Edit</a>
+                  <a class='button' href='delete-team.php?id=$id'>Delete</a></div>
+                  ";
+
         }
-        echo "<div class='col-md-12 seasons-info'><a href='edit-team.php?id=$id'>Add New Season</a></div>";
+        echo "<div class='col-md-12 seasons-info'><a href='edit-team.php?id=0'>Add New Season</a></div>";
       ?>
 
     </div>

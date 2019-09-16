@@ -20,9 +20,12 @@
         <!-- load all rows from table -->
         <?php
 
-        $id = $GET['id'];
+
+
+
         // make sure an id passed in querystring ?id=#
         if ( isset($_GET["id"]) ) {
+          $team_id = $_GET['id'];
             // Define SQL statement
             $mysql = "SELECT  `year`, `season`
                       FROM  `srjc_team_list`
@@ -32,7 +35,7 @@
             $mystatement = $myconn -> prepare( $mysql );
 
             // align parameters with our variables
-            $mystatement -> bind_param('i', $_GET['id']);
+            $mystatement -> bind_param('i', $team_id);
 
             // tell MySQL to perform the SQL command
             $mystatement -> execute();
@@ -46,29 +49,61 @@
                 // contain the column values for the row we got
                 $year = htmlspecialchars($year);
                 $season = htmlspecialchars($season);
+                $isfetched = true;
+                echo "<p> IS TRUE</p>";
             } else {
+                $isfetched = false;
                 // if nothing found, prepare empty vars for new item
                 $year = '';
-                $season = 0;
             }
             print "<form method='post' action='edit-team-save.php'>";
-            print "<select name='season'>
-                  <option value='Fall'>Fall</option>
-                  <option value='Spring'>Spring</option>
-                  </select>";
-            print "<select name='year'>";
                 $today = getdate();
-                $optionYear = $today['year'];
-                $optionYear = intval($optionYear);
-            for($i=0; $i<=3; $i++){
-                $adjustedYear = $optionYear+$i;
+                $currentYear = $today['year'];
+                $currentYear = intval($currentYear);
+                if($isfetched){
+                    print "<select name='season'>";
+                       if($season == "Fall"){
+                         print
+                         "<option value='Fall' selected>Fall</option>
+                         <option value='Spring'>Spring</option>
+                         </select>";
+                       }else{
+                         print
+                         "<option value='Fall'>Fall</option>
+                         <option value='Spring' selected>Spring</option>
+                         </select>";
+                       }
+                         print "<select name='year'>";
+                       for($i= $year-3; $i<=$currentYear+2; $i++){
+                             if($i == $year){
+                               print "<option value='$i' selected> $i </option>";
+                             }else {
+                               print "<option value='$i'> $i </option>";
+                             }
+                           }
+                       print "</select>
+                              <input value=$team_id name='id' type='hidden'><br>";
+                       print "<input type='submit' value='Save'>";
+                       print "</form>";
 
-                    print "<option value='$adjustedYear'> $adjustedYear </option>";
-                  }
-            print "</select>
-                   <input value=$id name='id' type='hidden'><br>";
-            print "<input type='submit' value='Save'>";
-            print "</form>";
+
+                }else{
+                  print "<select name='season'>
+                        <option value='Fall'>Fall</option>
+                        <option value='Spring'>Spring</option>
+                        </select>";
+
+                        print "<select name='year'>";
+                  for($i=$currentYear; $i<= $currentYear + 3; $i++){
+                          print "<option value='$i'> $i </option>";
+                        }
+                  print "</select>
+                         <input value=$team_id name='id' type='hidden'><br>";
+                  print "<input type='submit' value='Save'>";
+                  print "</form>";
+
+                }
+
         }
         ?>
     </body>

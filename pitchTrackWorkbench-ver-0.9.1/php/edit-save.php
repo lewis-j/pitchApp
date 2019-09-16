@@ -12,7 +12,6 @@
         <!-- delete row with matching ID from table -->
         <?php
 
-        echo "TEAM ID: ". $_POST["team_id"];
         $teamID = $_POST["team_id"];
         // was form submitted with id field
         if ( isset($_POST["id"]) ) {

@@ -90,9 +90,10 @@
         while ( $mystatement -> fetch() ) {
             // after we call fetch(), our bound variables (made with bind_result)
             // contain the column values for the row that we got from fetch()
-            print "<tr> ";
+            print "<tr data-id='$myid' data-team-id='$team_id' data-name='$mypitcher_name'> ";
             print "<td>$mypitcher_name</td>";
             print "<td><a href='edit.php?id=$myid&team_id=$team_id'>edit</a> ";
+            print "<td><button class='edit-player'>edit</a></button> ";
             print "<a href='delete.php?id=$myid'>delete</a></td>";
             print "</tr>";
         }
@@ -103,6 +104,7 @@
        </tr>";
         print "</tbody></table></div></div>";
         ?>
+        <script src="../js/dynamic_form_item.js"></script>
     </body>
 </html>
 <?php

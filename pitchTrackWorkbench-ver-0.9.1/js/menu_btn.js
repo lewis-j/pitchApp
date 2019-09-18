@@ -24,6 +24,9 @@ $(document).ready(function() {
   $('#edit-roster').click((e)=>{
        window.location.href = "season_selection_menu.php";
   });
+	$('#cubs-pitch').click((e)=>{
+       window.location.href = "main.php";
+  });
 
     $('#pitch-tracker').click((e)=>{
        window.location.href = "../../index.html";

@@ -336,8 +336,10 @@ array_push($coordArray, $tempArray);
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="../styles/menu-style.css">
+    <link rel="stylesheet" href="../styles/tables.css">
+      <link rel="stylesheet" href="../styles/header.css">
     <script src="../js/plotPoints.js"></script>
-    <script src="../js/mainScript.js"></script>
+    <script src="../js/menu_btn.js"></script>
     </head>
     <body>
         <div id="left-nav-menu" class="clear-header">

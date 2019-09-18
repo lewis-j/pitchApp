@@ -1,6 +1,5 @@
 <?php
     include "SQLConnect.inc.php";
-    echo "Welcome to the Santa Rosa Junior College Baseball DBMS";
 ?><!DOCTYPE html>
 <html lang="en">
     <head>
@@ -15,11 +14,26 @@
 
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/header.css">
+          <script src="../js/menu_btn.js"></script>
 
     <body>
-        <h1>You are logged into the Santa Rosa Junior College Baseball DBMS</h1>
-        <p>Please choose an Action for a row.</p>
-        <!-- load all rows from table -->
+      <div id="left-nav-menu" class="clear-header">
+      <div class="left-menu-item" id="cubs-pitch">Cubs Pitch Data<i class="fas fa-baseball-ball"></i></div>
+      <div class="left-menu-item" id="pitch-tracker">Pitch Tracker<i class="fas fa-baseball-ball"></i></div>
+  </div>
+
+    <div class="container-fluid main">
+      <div class="row" id="header-title" style="font-size:30px;cursor:pointer"><div id='menu-btn'>&#9776;</div><button id="logout" type="button" class="btn btn-default"><a href="logout.php">Logout</a></button></div>
+          <div class="row" id="header">
+
+    <img id="logo" class="col-sm-2" src="../../img/bearcubs.png" alt="Santa Rosa Bear Cubs Logo">
+              <div class="col-md-8 header-title"> <div>Santa Rosa Jr College</div>
+              <p>Roster Editor</p></div>
+
+
+
+          </div>
         <?php
         // Define SQL statement
         $mysql = "SELECT `team_id`,`year`, `season`

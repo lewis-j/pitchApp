@@ -6,41 +6,9 @@ body {
 	background-color:#f8fbff;
 }
 
-#logout{
-	position: absolute;
-	right: 5px;
-	margin:5px;
-}
-.header-title{
-	font-family: 'Cinzel', serif;
-	margin-top: 30px;
-	color:#002654;
-}
-.header-title div{
-	font-weight: bold;
-	font-size: 40px;
-}
 
-.header-title p{
-	margin-left: 55px;
-	font-size:25px;
-}
 .card-body{
 	padding: 2px;
-}
-
-.my-tables{
-	padding: 5px;
-
-}
-
-.table-group{
-	border: 1px solid black;
-	border-radius: 18px;
-	box-shadow: 5px 10px 30px #d1d1d1;
-	margin-top: 10px;
-	background-color: white;
-
 }
 .card{
 	color: black;
@@ -92,11 +60,6 @@ body {
 .key2 th{
 	height: 34.4px;
 }
-.game-stat {
-	margin-bottom: 0px;
-    margin-left: 32px;
-    width: 91.5%;
-}
 
 .chart-key{
 	position: absolute;
@@ -110,10 +73,6 @@ body {
 #pitcher-title{
 	text-align:center;
 	margin:35px;
-}
-
-.table-border{
-	border: 1px solid #dee2e6;
 }
 
 #logo{
@@ -132,15 +91,6 @@ body {
 
 }
 
-.title{
-	font-size: 30px;
-	padding-left:10px;
-}
-
-.header {
-background-color: 	#f8fbff;
-
-}
 
 .panel-default>.panel-heading {
 	background-color: #212529;

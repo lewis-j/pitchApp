@@ -4,10 +4,7 @@ $object = json_decode($request);
 
 $objType = $object->objType;
 	$_id = NULL;
-echo "here is the incoming object";
-var_dump($object);
 
-	var_dump("server.php objType 1");
 	$date = $object->date;
 	$time = $object->timeStamp;
 	$opponent = $object->opponent;
@@ -16,42 +13,7 @@ var_dump($object);
 	$startingPitcher = $object->startingPitcher;
 	$gameType = $object -> gameType;// PlayerData from UI
 
-// 1. Open connection to MySQL database (using username + password)
-$mydbserver = 'localhost:3306';
-$mydbname = 'baseball_app';
-$mydbuser = 'root';
-$mydbpass = 'root';
-
-    // NEW: ERROR HANDLING WITH MYSQLI mysqli_report()
-    // NOW I USE try {} catch() {} to INTERCEPT ERRORS
-    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-    //mysqli_report(MYSQLI_REPORT_ALL);
-
-    // Step 1 of our SQL 5-step program:
-    // when we open a connection to mysql we have to keep track of the connection in a variable
-    try {
-        $myconn = new mysqli(
-            $mydbserver,
-            $mydbuser,
-            $mydbpass,
-            $mydbname
-        );
-    }
-    catch(Exception $e) {
-        // echo "<pre>";
-        // print_r($e);
-        // echo "</pre>";
-        echo "<h1>Database Connection Error!</h1>";
-        var_dump("Database Connection Error!");
-        // do I use die() to cease running my code now?
-        // could do include() here possible
-        die ( "<h2>Final message</h2>" );
-        // or do I choose to handle this differently?
-        // header "Location: error.html";
-    }
-
-   echo "<h1>Database Connection Success!</h1>";
-   var_dump("Database Connection Success!");
+include "../pitchTrackWorkbench-ver-0.9.1/php/SQL_config.php";
 
 	 // insert into game_pitchers table.
 	 if ($objType == "1") {	// PlayerData from UI

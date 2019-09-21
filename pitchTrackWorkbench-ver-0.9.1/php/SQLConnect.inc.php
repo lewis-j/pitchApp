@@ -1,35 +1,7 @@
 <?php
 session_start();
 
-$mydbserver = 'localhost';
-$mydbname = 'baseball_app';
-$mydbuser = 'root';
-$mydbpass = 'root';
-
-
-
-
-mysqli_report( MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-
-
- try {
-   $myconn = new mysqli(
-            $mydbserver,
-            $mydbuser,
-            $mydbpass,
-            $mydbname
-        );
-
- }
- catch( Exception $e){
-
-    include "e_message.inc.php";
-
- }
-
-
-
-
+include "SQL_config.php";
 
 if($_SERVER['REQUEST_METHOD'] == "POST" && !isset($_SESSION['user_id'])){
 

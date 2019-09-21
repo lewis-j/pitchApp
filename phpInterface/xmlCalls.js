@@ -27,7 +27,7 @@ if(xhr.status==200){
 }
 }
         xhr.responseType = "json";
-         xhr.open("POST", "phpInterface/server.php");
+         xhr.open("POST", "phpInterface/store_player_data.php");
          xhr.setRequestHeader("Content-Type", "application/json");
          xhr.send(jsonString);
 
@@ -61,7 +61,7 @@ if(xhr.status==200){
 }
 }
 }
-         xhr.open("POST", "phpInterface/bulk_insert.php");
+         xhr.open("POST", "phpInterface/store_pitch_data.php");
          xhr.setRequestHeader("Content-Type", "application/json");
          xhr.send(jsonString);
 
@@ -95,7 +95,7 @@ if(xhr.status==200){
 }
 }
 }
-         xhr.open("POST", "phpInterface/server_get.php");
+         xhr.open("POST", "phpInterface/get_roster.php");
          //xhr.setRequestHeader("Content-Type", "application/json");
          xhr.send();
 

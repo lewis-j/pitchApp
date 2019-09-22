@@ -1,5 +1,5 @@
 <?php
-echo "IT RAN INSIDE"; 
+
 //phpmyadmin connection
 $mydbserver = 'localhost';
 $mydbname = 'baseball_app';

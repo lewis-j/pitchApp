@@ -118,7 +118,7 @@ function getPouchPitches(id){
 }
 
 function storePouch(data){
-  console.log(data.objType);
+  console.log("data object: ", data.objType);
  switch(data.objType) {
    case "1": return pitchersDB.put(data);
    case "2": return pitchesDB.put(data);

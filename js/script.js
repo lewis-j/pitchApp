@@ -18,7 +18,6 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
     objType: "1",
     /* jad */
     startingPitcher: true,
-    pitchCount: 0,
     //        player_id: "sql index"
     //        gameType : "GAME, InterSquad, OR BULLPEN ",
     //        date : "CURRENT DATE",
@@ -233,12 +232,14 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
       pitchObject.timeStamp = getCurrentTime();
       myCircle.setAttributeNS(null, "fill", pitchObject.pitchColor);
       newCircle = true;
-
+      console.log("PLayer DATA:",PlayerData);
       /* Begin jad */
       if (gl_newPitcher) /*switching new pitch to boolean 0=false 1=true*/ {
         gl_newPitcher = false;
         pitchObject._id = new Date();
-        pitchObject.pitcher_id = PlayerData._id;
+        // pitchObject.pitcher_id = PlayerData.pitcher_id;
+        PlayerData._id = new Date();
+
 
         storePouch(PlayerData).then(function(res) {
           return storePouch(pitchObject);
@@ -551,7 +552,7 @@ var valid = true;
   if((document.getElementById("pitcher-name").selectedIndex-1)!= -1){
 
     PlayerData.playerName = pitchersData[document.getElementById("pitcher-name").selectedIndex-1].pitcher_name;
-    PlayerData._id = pitchersData[document.getElementById("pitcher-name").selectedIndex-1]._id;
+    PlayerData.player_id = pitchersData[document.getElementById("pitcher-name").selectedIndex-1]._id;
 
     if((document.getElementById("game-type").selectedIndex-1)!= -1){
     PlayerData.gameType = $('#game-type').val();
@@ -827,7 +828,7 @@ function arcTween(a) {
 
   $('#enter-new-pitcher').click(() => {
     PlayerData.playerName = pitchersData[document.getElementById("new-pitcher-select").selectedIndex].pitcher_name;
-    PlayerData._id =  pitchersData[document.getElementById("new-pitcher-select").selectedIndex]._id;
+    PlayerData.pitcher_id =  pitchersData[document.getElementById("new-pitcher-select").selectedIndex]._id;
     PlayerData.startingPitcher = false;
 
     //clear pitch graph

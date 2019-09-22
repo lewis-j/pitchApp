@@ -3,10 +3,18 @@
 include "SQLConnect.inc.php";
 include "custom_error.inc.php";
 
+  $pitcher_id = 0;
+  $pitcherName = "";
+
+if(isset($_POST['pitcher'])){
 
 
-if(isset($_POST['pitchername'])){
-  $pitcherName = $_POST['pitchername'];
+  $pitcher = $_POST['pitcher'];
+  $object = json_decode($pitcher);
+
+
+    $pitcher_id = $object->id ;
+    $pitcherName = $object->name ;
 }else{
   $pitcherName = '';
 }
@@ -54,8 +62,8 @@ $colors = array("red","blue","green","purple","orange");
         $this->t = $t;
     }
 }
-         function createStatement($pitcherName, $option1, $option2, $date, $getOpponent){
-
+         function createStatement($pitcher_id, $pitcherName, $option1, $option2, $date, $getOpponent){
+                           echo "PITCHER______________ID:".$pitcher_id;
 
            $pitchT = array("FB","CB","CH","SL","other");
            $dateOption = "";
@@ -118,7 +126,7 @@ $colors = array("red","blue","green","purple","orange");
 
                     $allData = $allData."FROM `srjc_game-pitches`
                     INNER JOIN `srjc_game-pitchers` ON `srjc_game-pitches`.`fk_pitchers_id` = `srjc_game-pitchers`.`pitchers_id`
-                    WHERE `srjc_game-pitchers`.`pitcherName` = '{$pitcherName}' {$dateOption}";
+                    WHERE `srjc_game-pitchers`.`pitcher_id` = '{$pitcher_id}' {$dateOption}";
 
                     return $allData;
           }
@@ -288,7 +296,7 @@ $colors = array("red","blue","green","purple","orange");
 
         $allData = "SELECT `date`
                     FROM `srjc_game-pitchers`
-                    WHERE `pitcherName` = '{$pitcherName}'";
+                    WHERE `pitcher_id` = '{$pitcher_id}'";
         $statment = $myconn -> prepare($allData);
 
         $statment -> execute();
@@ -311,7 +319,7 @@ for($x = 0; $x < $arrlength; $x++) {
 $coordSQL = "SELECT `srjc_game-pitches`.`xCoord`,`srjc_game-pitches`.`yCoord`,`srjc_game-pitches`.`pitchType`
                     FROM `srjc_game-pitches`
                     INNER JOIN `srjc_game-pitchers` ON `srjc_game-pitches`.`fk_pitchers_id` = `srjc_game-pitchers`.`pitchers_id`
-                    WHERE `srjc_game-pitchers`.`pitcherName` = '{$pitcherName}' AND `srjc_game-pitchers`.`date` = '{$datesArray[$x]}'";
+                    WHERE `srjc_game-pitchers`.`pitcher_id` = '{$pitcher_id}' AND `srjc_game-pitchers`.`date` = '{$datesArray[$x]}'";
 $statement = $myconn->prepare($coordSQL);
 $statement->execute();
 $statement -> bind_result($xCoord, $yCoord, $pType);
@@ -366,15 +374,15 @@ array_push($coordArray, $tempArray);
       <form method="post" action="main.php">
          <div class="form-group">
     <label for="pitcherSelect">Select Pitcher</label>
-    <select class="form-control" id="pitcherSelect" name="pitchername">
+    <select class="form-control" id="pitcherSelect" name="pitcher">
     	<?php
-    	   $sql     = "SELECT `srjc_pitcher-roster`.`pitcher_name`,`srjc_team_list`.`year`, `srjc_team_list`.`season`
+    	   $sql     = "SELECT `srjc_pitcher-roster`.`pitcher_id`, `srjc_pitcher-roster`.`pitcher_name`,`srjc_team_list`.`year`, `srjc_team_list`.`season`
          FROM `srjc_pitcher-roster`
          INNER JOIN `srjc_team_list` ON `srjc_pitcher-roster`.`team_id` = `srjc_team_list`.`team_id`
 				 ORDER BY `srjc_team_list`.`year` DESC";
 		$statement = $myconn -> prepare($sql);
 		$statement -> execute();
-		$statement -> bind_result($Name, $year, $season);
+		$statement -> bind_result($id, $Name, $year, $season);
 
     	if($pitcherName == ""){
     	  ?>
@@ -385,11 +393,11 @@ array_push($coordArray, $tempArray);
 
     		if($Name === $pitcherName){
     	    ?>
-    	    <option selected><?php echo $Name; ?></option>
+    	    <option selected value='{"id":"<?php echo $id; ?>","name":"<?php echo $Name; ?>"}' ><?php echo $Name; ?></option>
     	    <?php
     		}else{
     		?>
-    		<option><?php echo $Name; ?></option>
+    		<option value='{"id":"<?php echo $id; ?>","name":"<?php echo $Name; ?>"}'><?php echo $Name; ?></option>
     		<?php
     		}
 
@@ -401,7 +409,6 @@ array_push($coordArray, $tempArray);
     ?>
     </select>
   </div>
-
    <button type="submit" class="btn btn-primary center-block">Submit</button>
 </form>
 
@@ -417,24 +424,24 @@ array_push($coordArray, $tempArray);
 
 
        echo "<div class='row table-group'><div class='col-md-12'>";
-                    $statement = createStatement($pitcherName,"","","",false);
+                    $statement = createStatement($pitcher_id, $pitcherName,"","","",false);
                     createTable("All Pitches",$pitcherName, $statement, $myconn,false, true);
                    echo "</div></div>";
        echo "<div class='row table-group'><div class='col-md-12'>";
-       $statement = createStatement($pitcherName,"`srjc_game-pitches`.`firstpitch` =  '1'","","",false);
+       $statement = createStatement($pitcher_id, $pitcherName,"`srjc_game-pitches`.`firstpitch` =  '1'","","",false);
                     createTable("First Pitches",$pitcherName,$statement, $myconn, false, false);
           echo "</div></div>";
            echo "<div class='row table-group'><div class='col-md-12'>";
-       $statement = createStatement($pitcherName,"`srjc_game-pitches`.`batterhandness` =  'Right'","","",false);
+       $statement = createStatement($pitcher_id, $pitcherName,"`srjc_game-pitches`.`batterhandness` =  'Right'","","",false);
                     createTable("Right Handed Hitters",$pitcherName,$statement, $myconn,false, true);
           echo "</div></div>";
             echo "<div class='row table-group'><div class='col-md-12'>";
-       $statement = createStatement($pitcherName,"`srjc_game-pitches`.`batterhandness` =  'Left'","","",false);
+       $statement = createStatement($pitcher_id, $pitcherName,"`srjc_game-pitches`.`batterhandness` =  'Left'","","",false);
                     createTable("Left Handed Hitters",$pitcherName,$statement, $myconn,false, true);
           echo "</div></div>";
  for($x = 0; $x < $arrlength; $x++) {
         echo "<div class='row table-group'><div class='col-md-7'>";
-          $statement = createStatement($pitcherName,"","",$datesArray[$x],true);
+          $statement = createStatement($pitcher_id, $pitcherName,"","",$datesArray[$x],true);
                     createTable("{$datesArray[$x]} ",$pitcherName,$statement, $myconn,true, true);
           ?>
          </div>

@@ -11,6 +11,7 @@ $objType = $object->objType;
 	$gameNumber = $object->gameNum;
 	$pitcherName = $object->playerName;
 	$startingPitcher = $object->startingPitcher;
+	$player_id = $object->player_id;
 	$gameType = $object -> gameType;// PlayerData from UI
 
 include "../pitchTrackWorkbench-ver-0.9.1/php/SQL_config.php";
@@ -24,14 +25,14 @@ include "../pitchTrackWorkbench-ver-0.9.1/php/SQL_config.php";
 				`time`,
 				`opponent` ,
 				`gameNumber` ,
-				`pitcherName` ,
+				`pitcher_id` ,
 				`startingPitcher` ,
 				`gameType`
 				)
 				VALUES (?,?,?,?,?,?,?,?)";
 
 				$statement = $myconn -> prepare($sql);
-				 $statement -> bind_param("isssssss",$_id ,$date, $time, $opponent, $gameNumber, $pitcherName, $startingPitcher, $gameType);
+				 $statement -> bind_param("isssssss",$_id ,$date, $time, $opponent, $gameNumber, $player_id, $startingPitcher, $gameType);
 				 $statement -> execute();
                  $statement -> close();
 

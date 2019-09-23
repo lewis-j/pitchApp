@@ -14,13 +14,13 @@ include "../pitchTrackWorkbench-ver-0.9.1/php/SQL_config.php";
 	 // Query database to get last game_pitchers table entry.
 	 // Need pitchers_id to make foreign fk_pitchers_id entry in
 	 //   game_pitches table.
-	 $sql = "SELECT `pitchers_id` , `pitcherName`
+	 $sql = "SELECT `pitchers_id` 
 							FROM `srjc_game-pitchers`
 							ORDER BY pitchers_id DESC
 							LIMIT 1";
 	$statement = $myconn -> prepare($sql);
 	$statement -> execute();
-    $statement -> bind_result($pid, $pName);
+    $statement -> bind_result($pid);
     if($statement -> fetch()){
     	$statement -> close();
     	$sqlGetPitch = "INSERT INTO `$mydbname`.`srjc_game-pitches`  (
@@ -57,7 +57,7 @@ include "../pitchTrackWorkbench-ver-0.9.1/php/SQL_config.php";
         // echo "<pre>";
         // print_r($e);
         // echo "</pre>";
-        echo "<h1>Database Connection Error!</h1>";
+        echo "<h1>Database Connection Error!</h1>".$e;
         var_dump("Database Connection Error!");
         // do I use die() to cease running my code now?
         // could do include() here possible

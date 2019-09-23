@@ -814,9 +814,8 @@ function arcTween(a) {
       console.log(res);
 
       $('#transfer-data').text("Transfer finished!");
-      setTimeout(() => {
-        $('#transfer-data').text("Upload Data!");
-      }, 3000);
+
+      window.open("#");
 
     });
 

@@ -156,9 +156,10 @@ function transferPouchToSql(){
 
 
         }).then(function () {
+          console.log("DOCITEM:", docItem.doc);
                 return pitchesDB.find({
                         selector: {
-                        pitcher_id: docItem.id,
+                        pitcher_id: docItem.doc.pitcher_id,
                         }
                      });
                 }).then((res)=>{

@@ -14,27 +14,76 @@
         // make sure an id passed in querystring ?id=#
         if ( isset($_GET["id"]) ) {
             // Define SQL statement
-            $mysql = "DELETE FROM `srjc_pitcher-roster`
-                      WHERE `pitcher_id` = ?";
-    
+            $mysql = "DELETE t1  FROM `srjc_game-pitches` as t1
+                                JOIN `srjc_game-pitchers` as t2 ON t2.`pitchers_id` = t1.`fk_pitchers_id`
+                                WHERE t2.`pitcher_id` = ?";
+
             // send templated text of my SQL command to MySQL
             $mystatement = $myconn -> prepare( $mysql );
-    
+
             // Align the parameters with variables
             $mystatement -> bind_param('i', $_GET["id"]);
-            
+
             // tell MySQL to perform the SQL command
             $mystatement -> execute();
-            
+
             //print_r($mystatement);
-            
+
             // check to see if any rows affected
             if ($mystatement -> affected_rows > 0) {
                 print "<p>Row deleted</p>";
             } else {
                 print "<p>No rows affected</p>";
             }
-            
+
+            // close statement
+            $mystatement -> close();
+
+            $mysql = "DELETE FROM `srjc_game-pitchers`
+                                WHERE `pitcher_id` = ?";
+
+            // send templated text of my SQL command to MySQL
+            $mystatement = $myconn -> prepare( $mysql );
+
+            // Align the parameters with variables
+            $mystatement -> bind_param('i', $_GET["id"]);
+
+            // tell MySQL to perform the SQL command
+            $mystatement -> execute();
+
+            //print_r($mystatement);
+
+            // check to see if any rows affected
+            if ($mystatement -> affected_rows > 0) {
+                print "<p>Row deleted</p>";
+            } else {
+                print "<p>No rows affected</p>";
+            }
+
+            // close statement
+            $mystatement -> close();
+
+            $mysql = "DELETE FROM `srjc_pitcher-roster`
+                                WHERE `pitcher_id` = ?";
+
+            // send templated text of my SQL command to MySQL
+            $mystatement = $myconn -> prepare( $mysql );
+
+            // Align the parameters with variables
+            $mystatement -> bind_param('i', $_GET["id"]);
+
+            // tell MySQL to perform the SQL command
+            $mystatement -> execute();
+
+            //print_r($mystatement);
+
+            // check to see if any rows affected
+            if ($mystatement -> affected_rows > 0) {
+                print "<p>Row deleted</p>";
+            } else {
+                print "<p>No rows affected</p>";
+            }
+
             // close statement
             $mystatement -> close();
         }

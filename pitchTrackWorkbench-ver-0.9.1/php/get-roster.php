@@ -1,9 +1,9 @@
 <?php
-$requestPayload = file_get_contents("php://input");
 
-$team_id = json_decode($requestPayload);
 
-echo $team_id;
+$team_id = $_POST['team_id'];
+
+
 
 class pitcher {
 
@@ -22,9 +22,6 @@ class pitcher {
 
 include "../../pitchTrackWorkbench-ver-0.9.1/php/SQL_config.php";
 
-
-
-$team_id = 1;
 
 
 	 try{

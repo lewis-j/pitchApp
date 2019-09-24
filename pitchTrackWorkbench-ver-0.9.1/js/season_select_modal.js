@@ -9,7 +9,7 @@ $(document).ready(()=>{
     modal.find('.modal-title').text('Are you sure you want to Delete ' + subject+'? ')
     modal.find('.delete-season').attr('data-id', id);
 
-const jsonString = JSON.stringify(id);
+    var params = 'team_id='+id;
     const xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -25,6 +25,7 @@ const jsonString = JSON.stringify(id);
         });
         modalBodyHtml+="</tbody></table>";
         console.log(modalBodyHtml);
+        console.log("RESPONSE",this.responseText);
         modal.find('.modal-body').html(modalBodyHtml);
 
 
@@ -32,9 +33,11 @@ const jsonString = JSON.stringify(id);
       }
     };
 
-    xhttp.open("GET", "get-roster.php", true);
-    xhttp.setRequestHeader("Content-Type", "application/json");
-    xhttp.send();
+    xhttp.open("POST", "get-roster.php", true);
+    xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+
+    xhttp.send(params);
+
   });
 
   $('.delete-season').click((e)=>{

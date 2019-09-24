@@ -93,8 +93,7 @@
             print "<tr data-id='$myid' data-team-id='$team_id' data-name='$mypitcher_name'> ";
             print "<td>$mypitcher_name</td>";
             print "<td><button class='edit-player'>edit</a></button> ";
-            print "<button type='button' class='btn btn-danger' data-toggle='modal' data-player='$mypitcher_name' data-id='$myid' data-target='.player-delete-modal'>Delete</button>";
-            print "<a href='delete.php?id=$myid'>delete</a></td>";
+            print "<button type='button' class='btn btn-danger' data-toggle='modal' data-player='$mypitcher_name' data-id='$myid' data-target='.player-delete-modal'>Delete</button></td>";
             print "</tr>";
         }
         $mystatement->close();

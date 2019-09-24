@@ -14,51 +14,73 @@
         // make sure an id passed in querystring ?id=#
         if ( isset($_GET["id"]) ) {
             // Define SQL statement
-            $mysql = "DELETE FROM `srjc_pitcher-roster`
-                      WHERE `team_id` = ?";
+              $mysql = "DELETE t1  FROM `srjc_game-pitches` as t1
+                        JOIN `srjc_game-pitchers` as t2 ON t2.`pitchers_id` = t1.`fk_pitchers_id`
+                        JOIN `srjc_pitcher-roster` as t3 ON t3.`pitcher_id` = t2.`pitcher_id`
+                        WHERE t3.`team_id` = ?";
 
-            // send templated text of my SQL command to MySQL
             $mystatement = $myconn -> prepare( $mysql );
 
-            // Align the parameters with variables
             $mystatement -> bind_param('i', $_GET["id"]);
 
-            // tell MySQL to perform the SQL command
             $mystatement -> execute();
 
-            //print_r($mystatement);
-
-            // check to see if any rows affected
             if ($mystatement -> affected_rows > 0) {
-                print "<p>Player row deleted</p>";
+                print "<p>".$mystatement -> affected_rows." pitches deleted</p>";
             } else {
-                print "<p>No Player rows affected</p>";
+                print "<p>No Pitch rows affected</p>";
             }
-
-            $mysql = "DELETE FROM `srjc_team_list`
-                      WHERE `team_id` = ?";
-
-            // send templated text of my SQL command to MySQL
-            $mystatement = $myconn -> prepare( $mysql );
-
-            // Align the parameters with variables
-            $mystatement -> bind_param('i', $_GET["id"]);
-
-            // tell MySQL to perform the SQL command
-            $mystatement -> execute();
-
-            //print_r($mystatement);
-
-            // check to see if any rows affected
-            if ($mystatement -> affected_rows > 0) {
-                print "<p>Team Row deleted</p>";
-            } else {
-                print "<p>No Team rows affected</p>";
-            }
-
-
-            // close statement
             $mystatement -> close();
+
+
+            $mysql = "DELETE t1  FROM `srjc_game-pitchers` as t1
+                      JOIN `srjc_pitcher-roster` as t2 ON t2.`pitcher_id` = t1.`pitcher_id`
+                      WHERE t2.`team_id` = ?";
+
+          $mystatement = $myconn -> prepare( $mysql );
+
+          $mystatement -> bind_param('i', $_GET["id"]);
+
+          $mystatement -> execute();
+
+          if ($mystatement -> affected_rows > 0) {
+              print "<p>".$mystatement -> affected_rows." Games deleted</p>";
+          } else {
+              print "<p>No Game rows affected</p>";
+          }
+          $mystatement -> close();
+
+          $mysql = "DELETE t1  FROM `srjc_pitcher-roster` as t1
+                    WHERE t1.`team_id` = ?";
+
+        $mystatement = $myconn -> prepare( $mysql );
+
+        $mystatement -> bind_param('i', $_GET["id"]);
+
+        $mystatement -> execute();
+
+        if ($mystatement -> affected_rows > 0) {
+            print "<p>".$mystatement -> affected_rows." Players deleted</p>";
+        } else {
+            print "<p>No Player rows affected</p>";
+        }
+        $mystatement -> close();
+
+        $mysql = "DELETE t1  FROM `srjc_team_list` as t1
+                  WHERE t1.`team_id` = ?";
+
+      $mystatement = $myconn -> prepare( $mysql );
+
+      $mystatement -> bind_param('i', $_GET["id"]);
+
+      $mystatement -> execute();
+
+      if ($mystatement -> affected_rows > 0) {
+          print "<p>".$mystatement -> affected_rows." Teams deleted</p>";
+      } else {
+          print "<p>No Team rows affected</p>";
+      }
+      $mystatement -> close();
         }
         print "<p><a href='season_selection_menu.php'>List</a></p>";
         ?>

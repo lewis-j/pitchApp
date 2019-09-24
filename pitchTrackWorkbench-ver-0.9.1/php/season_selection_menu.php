@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="../styles/style.css">
         <link rel="stylesheet" href="../styles/header.css">
           <script src="../js/menu_btn.js"></script>
+          <script src="../js/season_select_modal.js"></script>
 
     <body>
       <div id="left-nav-menu" class="clear-header">
@@ -54,13 +55,32 @@
               <div class="row">
         <?php
         while ( $mystatement -> fetch() ) {
-            echo "<div class='col-md-12 seasons-info'><a href='main-list.php?id=$id'><h4>$year</h4> <h5>$season</h5></a>
-                  <a class='button' href='edit-team.php?id=$id'>Edit</a>
-                  <a class='button' href='delete-team.php?id=$id'>Delete</a></div>
-                  ";
+            echo "<div class='col-md-12 seasons-info'><a href='main-list.php?id=$id'><h4 class='inline-title'>$season $year</h4></a>
+                  <a class='button btn btn-dark season-edit' href='edit-team.php?id=$id'>Edit</a>
+                  <button type='button' class='btn btn-danger' data-toggle='modal' data-id='$id' data-title='Team of $season $year' data-target='.season-delete-modal'>Delete</button>
+                  </div>";
 
         }
         echo "<div class='col-md-12 seasons-info'><a href='edit-team.php?id=0'>Add New Season</a></div>";
+        echo "<div class='modal season-delete-modal' tabindex='-1' role='dialog'>
+  <div class='modal-dialog' role='document'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h5 class='modal-title'>Modal title</h5>
+        <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+          <span aria-hidden='true'>&times;</span>
+        </button>
+      </div>
+      <div class='modal-body'>
+
+      </div>
+      <div class='modal-footer'>
+        <button type='button' class='btn btn-danger delete-season'>Comfirm Delete</button>
+        <button type='button' class='btn btn-secondary' data-dismiss='modal'>Close</button>
+      </div>
+    </div>
+  </div>
+</div>"
       ?>
 
     </div>

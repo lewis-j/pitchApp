@@ -2,7 +2,7 @@
 
 
 body {
-	font-family: 'PT Serif', serif;
+font-family: 'Cinzel', serif;
 	background-color:#f8fbff;
 }
 
@@ -104,4 +104,8 @@ body {
 	text-align: center;
 padding: 32px;
 font-size: 24px;
+}
+
+.season-delete{
+
 }

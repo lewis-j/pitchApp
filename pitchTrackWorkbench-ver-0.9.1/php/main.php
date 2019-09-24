@@ -62,8 +62,8 @@ $colors = array("red","blue","green","purple","orange");
         $this->t = $t;
     }
 }
-         function createStatement($pitcher_id, $pitcherName, $option1, $option2, $date, $getOpponent){
-                           echo "PITCHER______________ID:".$pitcher_id;
+         function createStatement($pitcher_id, $pitcherName, $option1, $option2, $date){
+                        
 
            $pitchT = array("FB","CB","CH","SL","other");
            $dateOption = "";
@@ -73,11 +73,7 @@ $colors = array("red","blue","green","purple","orange");
 
 
              $allData = "SELECT ";
-                   if($getOpponent){
-                     $allData = $allData."`srjc_game-pitchers`.`opponent`,";
-                   }
-              // $allData = $allData."SUM(CASE WHEN  `srjc_game-pitches`.`play` =  'Strike' THEN 1 ELSE 0 END) as 'allS',
-              //       SUM(CASE WHEN  `srjc_game-pitches`.`play` =  'Ball' THEN 1 ELSE 0 END) as 'allB',";
+
                     if($option1 ==""){
                       $allData = $allData . "MIN(`srjc_game-pitches`.`pitchspeed`),
                                              MAX(`srjc_game-pitches`.`pitchspeed`),
@@ -131,7 +127,7 @@ $colors = array("red","blue","green","purple","orange");
                     return $allData;
           }
 
-         function createTable($title,$pitcherName, $Data, $myconn, $getOpponent, $showTable3){
+         function createTable($title,$pitcherName, $Data, $myconn, $opponent, $showTable3){
         try{
 
 
@@ -139,21 +135,13 @@ $colors = array("red","blue","green","purple","orange");
         $statment = $myconn -> prepare($Data);
 
         $statment -> execute();
-        if(!$getOpponent){
+
         $statment -> bind_result( $allMinSp, $allMaxSp, $allAvgSp,$allS, $allB,$allBat, $allK, $allW, $allH,
                                   $allSFB, $allBFB, $allMinSpFB,$allMaxSpFB, $allAvgSpFB,$allBatFB,
                                   $allSCB, $allBCB, $allMinSpCB,$allMaxSpCB, $allAvgSpCB,$allBatCB,
                                   $allSCH, $allBCH, $allMinSpCH,$allMaxSpCH, $allAvgSpCH,$allBatCH,
                                   $allSSL, $allBSL, $allMinSpSL,$allMaxSpSL, $allAvgSpSL,$allBatSL,
                                   $allSOT, $allBOT, $allMinSpOT,$allMaxSpOT, $allAvgSpOT,$allBatOT);
-        }else{
-            $statment -> bind_result( $opponent, $allMinSp, $allMaxSp, $allAvgSp,$allS, $allB,$allBat, $allK, $allW, $allH,
-                                      $allSFB, $allBFB, $allMinSpFB,$allMaxSpFB, $allAvgSpFB,$allBatFB,
-                                      $allSCB, $allBCB, $allMinSpCB,$allMaxSpCB, $allAvgSpCB,$allBatCB,
-                                      $allSCH, $allBCH, $allMinSpCH,$allMaxSpCH, $allAvgSpCH,$allBatCH,
-                                      $allSSL, $allBSL, $allMinSpSL,$allMaxSpSL, $allAvgSpSL,$allBatSL,
-                                      $allSOT, $allBOT, $allMinSpOT,$allMaxSpOT, $allAvgSpOT,$allBatOT);
-        }
 
         }catch(Exception $e){
           echo $e;
@@ -179,10 +167,10 @@ $colors = array("red","blue","green","purple","orange");
                                  new TableData("CH", $allSCH, $allBCH, $allMinSpCH,$allMaxSpCH, $allAvgSpCH,$allBatCH),
                                  new TableData( "SL",$allSSL, $allBSL, $allMinSpSL,$allMaxSpSL, $allAvgSpSL,$allBatSL),
                                  new TableData("OT",$allSOT, $allBOT, $allMinSpOT,$allMaxSpOT, $allAvgSpOT,$allBatOT));
-    if(!$getOpponent){
-              echo "<div class='col-sm-12'><div class='pitcher-name'>{$pitcherName}</div> <div class='title'>{$title}</div></div>";
+    if($opponent!=null){
+              echo "<div class='col-sm-12'><div class='pitcher-name'>{$pitcherName}</div> <div class='title'>{$title} {$opponent}</div></div>";
               }else{
-              echo "<div class='col-sm-12'><div class='pitcher-name'>{$pitcherName}</div> <div class='game-title'>{$title} {$opponent}</div></div>";
+              echo "<div class='col-sm-12'><div class='pitcher-name'>{$pitcherName}</div> <div class='game-title'>{$title}</div></div>";
 
               }
                           if($showTable3){
@@ -292,20 +280,31 @@ $colors = array("red","blue","green","purple","orange");
         // echo "</div></div>";
       }
 
-      $datesArray = array();
+      Class GameSessions {
 
-        $allData = "SELECT `date`
+
+      function __construct($date, $opponent){
+
+          $this->date=$date;
+          $this->opponent=$opponent;
+        }
+
+
+      }
+      $gamesArray = array();
+
+        $allData = "SELECT `date`, `opponent`
                     FROM `srjc_game-pitchers`
                     WHERE `pitcher_id` = '{$pitcher_id}'";
         $statment = $myconn -> prepare($allData);
 
         $statment -> execute();
 
-        $statment -> bind_result($date);
+        $statment -> bind_result($date,$opponent);
 
         while($statment -> fetch()){
 
-          array_push($datesArray, $date);
+          array_push($gamesArray, new GameSessions($date, $opponent));
 
           }
 
@@ -313,13 +312,16 @@ $colors = array("red","blue","green","purple","orange");
 
 $coordArray = array();
 
-$arrlength = count($datesArray);
+$arrlength = count($gamesArray);
+
+
 
 for($x = 0; $x < $arrlength; $x++) {
 $coordSQL = "SELECT `srjc_game-pitches`.`xCoord`,`srjc_game-pitches`.`yCoord`,`srjc_game-pitches`.`pitchType`
                     FROM `srjc_game-pitches`
                     INNER JOIN `srjc_game-pitchers` ON `srjc_game-pitches`.`fk_pitchers_id` = `srjc_game-pitchers`.`pitchers_id`
-                    WHERE `srjc_game-pitchers`.`pitcher_id` = '{$pitcher_id}' AND `srjc_game-pitchers`.`date` = '{$datesArray[$x]}'";
+                    WHERE `srjc_game-pitchers`.`pitcher_id` = '{$pitcher_id}' AND `srjc_game-pitchers`.`date` = '{$gamesArray[$x]->date}'";
+
 $statement = $myconn->prepare($coordSQL);
 $statement->execute();
 $statement -> bind_result($xCoord, $yCoord, $pType);
@@ -328,7 +330,10 @@ while($statement -> fetch()){
   array_push($tempArray, new Coords($xCoord, $yCoord,$pType));
 }
 array_push($coordArray, $tempArray);
+
 }
+
+
 
 ?>
 <!DOCTYPE html>
@@ -424,27 +429,27 @@ array_push($coordArray, $tempArray);
 
 
        echo "<div class='row table-group'><div class='col-md-12'>";
-                    $statement = createStatement($pitcher_id, $pitcherName,"","","",false);
-                    createTable("All Pitches",$pitcherName, $statement, $myconn,false, true);
+                    $statement = createStatement($pitcher_id, $pitcherName,"","","");
+                    createTable("All Pitches",$pitcherName, $statement, $myconn,null, true);
                    echo "</div></div>";
        echo "<div class='row table-group'><div class='col-md-12'>";
-       $statement = createStatement($pitcher_id, $pitcherName,"`srjc_game-pitches`.`firstpitch` =  '1'","","",false);
-                    createTable("First Pitches",$pitcherName,$statement, $myconn, false, false);
+       $statement = createStatement($pitcher_id, $pitcherName,"`srjc_game-pitches`.`firstpitch` =  '1'","","");
+                    createTable("First Pitches",$pitcherName,$statement, $myconn, null, false);
           echo "</div></div>";
            echo "<div class='row table-group'><div class='col-md-12'>";
-       $statement = createStatement($pitcher_id, $pitcherName,"`srjc_game-pitches`.`batterhandness` =  'Right'","","",false);
-                    createTable("Right Handed Hitters",$pitcherName,$statement, $myconn,false, true);
+       $statement = createStatement($pitcher_id, $pitcherName,"`srjc_game-pitches`.`batterhandness` =  'Right'","","");
+                    createTable("Right Handed Hitters",$pitcherName,$statement, $myconn,null, true);
           echo "</div></div>";
             echo "<div class='row table-group'><div class='col-md-12'>";
-       $statement = createStatement($pitcher_id, $pitcherName,"`srjc_game-pitches`.`batterhandness` =  'Left'","","",false);
-                    createTable("Left Handed Hitters",$pitcherName,$statement, $myconn,false, true);
+       $statement = createStatement($pitcher_id, $pitcherName,"`srjc_game-pitches`.`batterhandness` =  'Left'","","");
+                    createTable("Left Handed Hitters",$pitcherName,$statement, $myconn,null, true);
           echo "</div></div>";
  for($x = 0; $x < $arrlength; $x++) {
         echo "<div class='row table-group'><div class='col-md-7'>";
-          $statement = createStatement($pitcher_id, $pitcherName,"","",$datesArray[$x],true);
-                    createTable("{$datesArray[$x]} ",$pitcherName,$statement, $myconn,true, true);
+          $statement = createStatement($pitcher_id, $pitcherName,"","",$gamesArray[$x]->date);
+                    createTable("{$gamesArray[$x]->date} ",$pitcherName,$statement, $myconn,$gamesArray[$x]->opponent, true);
           ?>
-         </div>
+        </div>
 
             <div class="chart-data col-md-5">
                       <div class="chart-key">

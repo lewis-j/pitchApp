@@ -545,6 +545,19 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
 
   });
 
+  $("#new-btn").click(()=>{
+      $('#opening-menu').css('display', 'none');
+      $('#select-menu').css('display', 'block');
+
+
+
+  });
+
+  $('#database-btn').click(()=>{
+
+    window.location.href = "pitchTrackWorkbench-ver-0.9.1/php/main.php";
+  });
+
 
 
   $('#start-btn').click(() => {
@@ -581,7 +594,7 @@ var valid = true;
     if(valid){
 
     gl_newPitcher = true; /* jad */
-    $('#start-background').css('width', '0');
+    $('#select-menu').css('width', '0');
     document.getElementById('first-pitch').checked = true;
     PlayerData.objType = "1";
     PlayerData.date = getTodaysDate("yyyy/mm/dd");

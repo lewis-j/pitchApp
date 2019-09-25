@@ -100,10 +100,11 @@ font-family: 'Cinzel', serif;
 .seasons-info {
 	border: 1px solid black;
 	border-radius: 15px;
-	box-shadow: 5px 10px 15px black;
+box-shadow: 1px 5px 6px black;
 	text-align: center;
 padding: 32px;
 font-size: 24px;
+margin: 6px auto;
 }
 
 .season-delete{

@@ -189,8 +189,10 @@ margin-left: 33px;
     z-index: 11;
     left: 172;
     transition: 0.5s;
-    background-color: #15172c;
+    background-image: url(../img/homeplate.jpg);
     overflow-x: hidden;
+    background-size: cover;
+ background-repeat: no-repeat;
 }
 
 #select-pitcher-screen .close-btn {
@@ -203,12 +205,18 @@ margin-left: 33px;
 }
 
 #select-pitcher-menu{
-    color: #15172c;
-    width: 334px;
-    background-color: #a8a8a8;
-    margin: 50px auto;
-    padding: 41px;
-    box-shadow: 3px 3px 10px #000000;
+  text-align: center;
+  border: 2px solid black;
+  border-radius: 2px;
+  background-color: black;
+  opacity: .85;;
+  padding: 40px;
+  color:white;
+  opacity: .85;
+  width: 400px;
+  height: 600px;
+  margin: 30px auto;
+  box-shadow: 3px 3px 10px #000000;
 }
 #new-pitcher-select {
     margin: 30px 0px;

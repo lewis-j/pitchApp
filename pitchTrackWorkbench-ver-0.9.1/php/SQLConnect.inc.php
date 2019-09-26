@@ -1,6 +1,6 @@
 <?php
-session_start();
 
+       if(!isset($_SESSION)) session_start();
 include "SQL_config.php";
 
 if($_SERVER['REQUEST_METHOD'] == "POST" && !isset($_SESSION['user_id'])){

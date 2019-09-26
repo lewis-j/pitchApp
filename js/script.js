@@ -45,7 +45,7 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
 
   //set dynamic style rules
   document.getElementById("left-nav-menu").style.left = "-17vw";
-  $('.clear-header').css("height", $('#pitch-zone').height());
+  $('.clear-header').css("height", /*$('#pitch-zone').height()*/ 743);
 
 
   /* Begin jad */
@@ -594,7 +594,7 @@ var valid = true;
     if(valid){
 
     gl_newPitcher = true; /* jad */
-    $('#select-menu').css('width', '0');
+    $('#start-background').css('display', 'none');
     document.getElementById('first-pitch').checked = true;
     PlayerData.objType = "1";
     PlayerData.date = getTodaysDate("yyyy/mm/dd");

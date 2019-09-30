@@ -195,7 +195,17 @@ margin-left: 33px;
  background-repeat: no-repeat;
 }
 
-#select-pitcher-screen .close-btn {
+#transfer-edit-screen{
+    height: 100%;
+    width: 0px;
+    position: fixed;
+    z-index: 11;
+    left: 172;
+    transition: 0.5s;
+    background-color: grey;
+}
+
+.close-btn {
   position: absolute;
   top: 0;
   right: 40px;
@@ -215,7 +225,8 @@ margin-left: 33px;
   opacity: .85;
   width: 400px;
   height: 600px;
-  margin: 30px auto;
+  margin: 30px
+  auto;
   box-shadow: 3px 3px 10px #000000;
 }
 #new-pitcher-select {

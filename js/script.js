@@ -822,15 +822,20 @@ function arcTween(a) {
   });
 
   $('#transfer-data').click(() => {
+
     $('#transfer-data').text("Starting transfer!");
-    transferPouchToSql().then((res) => {
-      console.log(res);
+    $('#transfer-edit-screen').css('width', '83vw');
+    $('#transfer-edit-screen').css('left', '17vw');
 
-      $('#transfer-data').text("Transfer finished!");
 
-      window.open("#");
-
-    });
+    // transferPouchToSql().then((res) => {
+    //   console.log(res);
+    //
+    //   $('#transfer-data').text("Transfer finished!");
+    //
+    //   window.open("./");
+    //
+    // });
 
   });
 
@@ -887,10 +892,11 @@ function arcTween(a) {
 
   });
 
-  $(".close-btn").click(function() {
-    document.getElementById("left-nav-menu").style.left = "-17vw";
-    document.getElementById('select-pitcher-screen').style.left = "-17vw";
-    document.getElementById('select-pitcher-screen').style.width = "0px";
+  $(".close-btn").click(function(e) {
+
+      document.getElementById("left-nav-menu").style.left = "-17vw";
+    e.target.parentNode.style.left = "-17vw";
+    e.target.parentNode.style.width = "0px";
     removeMenuListeners();
     setTimeout(() => { document.getElementById('select-pitcher-screen').style.left = "17vw"; }, 1000);
 

@@ -456,21 +456,46 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
 
   var pitchersData = [];
 
-  getPouchRoster().then((res) => {
+
+
+  getPouchRosterList().then((res) => {
     console.log("items", res);
-    res.forEach((item) => {
-      pitchersData.push(item);
-      $('#pitcher-name').append("<option>" + item.pitcher_name + "</option");
+    var rosterIndex;
+    res.forEach((item,index) => {
+      item = item.doc;
+
+        console.log("before get roster", res.length);
+
+      if(res.length-1 == index){
+        $('#roster-list').append("<option selected data-id="+item._id+">" + item.year + " " + item.season + " " + item.title +"</option");
+        rosterIndex = parseInt(item._id);
+      }else{
+          $('#roster-list').append("<option data-id="+item._id+">" + item.year + " " + item.season + " " + item.title +"</option");
+      }
 
     });
+     console.log("index:",typeof(rosterIndex));
+    return getPouchRoster(1);
 
+  }).then((res)=>{
+      res.forEach((item)=>{
+          $('#pitcher-name').append("<option selected data-id="+item._id+">" + item.pitcher_name +"</option");
+      });
 
   }).catch((e) => {
     console.log("Error:", e)
   });
 
 
-
+$('#roster-list').change((e)=>{
+  var index = parseInt(e.target.options[e.target.selectedIndex].dataset.id);
+    getPouchRoster(index).then((res)=>{
+      $('#pitcher-name').empty();
+      res.forEach((item)=>{
+          $('#pitcher-name').append("<option selected data-id="+item._id+">" + item.pitcher_name +"</option");
+      });
+  });
+});
 
   var opposingTeams = ["SRJC", "Chabot", "De Anza", "Marin", "Laney", "Canada", "Solano", "Contra Costa", "Cabrillo", "San Juaquin Delta", "Modesto", "Diablo Valley", "Folsom Lake", "American River", "Cosumnes River", "Monterey Peninsula", "Sacromento City", "Seirra"];
 

@@ -63,7 +63,7 @@ $colors = array("red","blue","green","purple","orange");
     }
 }
          function createStatement($pitcher_id, $pitcherName, $option1, $option2, $date){
-                        
+
 
            $pitchT = array("FB","CB","CH","SL","other");
            $dateOption = "";
@@ -167,6 +167,7 @@ $colors = array("red","blue","green","purple","orange");
                                  new TableData("CH", $allSCH, $allBCH, $allMinSpCH,$allMaxSpCH, $allAvgSpCH,$allBatCH),
                                  new TableData( "SL",$allSSL, $allBSL, $allMinSpSL,$allMaxSpSL, $allAvgSpSL,$allBatSL),
                                  new TableData("OT",$allSOT, $allBOT, $allMinSpOT,$allMaxSpOT, $allAvgSpOT,$allBatOT));
+                              
     if($opponent!=null){
               echo "<div class='col-sm-12'><div class='pitcher-name'>{$pitcherName}</div> <div class='title'>{$title} {$opponent}</div></div>";
               }else{

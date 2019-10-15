@@ -73,7 +73,36 @@ if(xhr.status==200){
 
 }
 
-  function loadSQL(){
+function getRosterList(){
+
+			 return new Promise(function (resolve, reject){
+
+
+		 const xhr = new XMLHttpRequest();
+xhr.onreadystatechange = function(){
+if(xhr.readyState==4){
+if(xhr.status==200){
+var obj = JSON.parse(xhr.response);
+	console.log("object ub xmml calls", obj);
+resolve(obj);
+
+} else{
+	reject({
+				status: xhr.status,
+				statusText: xhr.statusText
+			});
+
+}
+}
+}
+			 xhr.open("POST", "phpInterface/get_team_list.php");
+			 //xhr.setRequestHeader("Content-Type", "application/json");
+			 xhr.send();
+
+});
+}
+
+  function getRoster(){
 
          return new Promise(function (resolve, reject){
 
@@ -86,6 +115,7 @@ if(xhr.status==200){
   var obj = JSON.parse(xhr.response);
 	resolve(obj);
 
+
 } else{
     reject({
 					status: xhr.status,
@@ -95,7 +125,7 @@ if(xhr.status==200){
 }
 }
 }
-         xhr.open("POST", "phpInterface/get_roster.php");
+         xhr.open("POST", "phpInterface/get_team.php");
          //xhr.setRequestHeader("Content-Type", "application/json");
          xhr.send();
 

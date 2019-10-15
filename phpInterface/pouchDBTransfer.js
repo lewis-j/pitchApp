@@ -5,41 +5,79 @@
 var pitchersDB = new PouchDB('pitchers');
 var pitchesDB = new PouchDB('pitch');
 
-function getPouchRoster(){
+function getPouchRosterList(){
 
-const db = new PouchDB('roster', { skip_setup: true });
- var year, season;
-// db.destroy();
+const rostlistDB = new PouchDB('roster_list', { skip_setup: true });
+
+ // rostlistDB.destroy();
 
 
 return new Promise ((response,rej)=>{
 
-  db.info().then((res)=>{
+  rostlistDB.info().then((res)=>{
 
   return new Promise((resolve, reject)=>{
     if(res.doc_count === 0){
         resolve();
     }else{
-      db.allDocs({include_docs: true ,startkey: '_', limit:1, descending:true})
-  .then((res)=>{
-    // response(res.rows);
-    console.log("roster response: ", res);
-   year = res.rows[0].doc.year;
-   season = res.rows[0].doc.season;
-  // reject("Returned from pouchDBTransfer");
-  return db.createIndex({
+      rostlistDB.allDocs({include_docs: true ,startkey: '_', descending:true})
+     .then((res)=>{
+       console.log(res.rows)
+     response(res.rows);
+     reject("returned from db.info() promise");
+   });
+  }
+  });
+})
+  .then((res) => {
+    return getRosterList();
+  }).then((obj)=> {
+    console.log("roster_list response in pouch", obj);
+      return rostlistDB.bulkDocs(obj);
+
+  }).then((res)=>{
+    return rostlistDB.allDocs({include_docs: true, descending:true});
+  }).then((found)=>{
+    console.log("found list", found)
+    response(found.rows);
+  }).catch(e => {
+    rej("Error in pouchDBTransfer: "+e);
+  });
+  });
+
+
+
+}
+
+function getPouchRoster(team_id){
+
+const rostDB = new PouchDB('roster', { skip_setup: true });
+
+// db.destroy();
+console.log("ingetroster", team_id);
+
+return new Promise ((response,rej)=>{
+
+  rostDB.info().then((res)=>{
+
+  return new Promise((resolve, reject)=>{
+    if(res.doc_count === 0){
+        resolve();
+    }else{
+     console.log("after doc count:", res);
+   rostDB.createIndex({
        index: {
-         fields:['year','season']
+         fields:['team_id']
        }
-     });
-   }).then((res)=>{
-          return db.find({
+     }).then((res)=>{
+       console.log("response test", res)
+          return rostDB.find({
       selector: {
-        year: year,
-        season: season
+        team_id: team_id
       }
     });
      }).then((found)=>{
+       console.log("found this ind", found);
       response(found.docs);
      reject("returned from db.info() promise");
    });
@@ -47,26 +85,20 @@ return new Promise ((response,rej)=>{
   });
 })
   .then((res) => {
-    return loadSQL();
+    return getRoster();
   }).then((obj)=> {
-     return db.bulkDocs(obj);
+     return rostDB.bulkDocs(obj);
   }).then(()=>{
-      return db.allDocs({include_docs: true ,startkey: '_', limit:2, descending:true})
-  }).then((res)=>{
-    // response(res.rows);
-   year = res.rows[0].doc.year;
-   season = res.rows[0].doc.season;
-  // reject("Returned from pouchDBTransfer");
-  return db.createIndex({
+
+  return rostDB.createIndex({
        index: {
-         fields:['year','season']
+         fields:['team_id']
        }
      });
    }).then((res)=>{
-          return db.find({
+          return rostDB.find({
       selector: {
-        year: year,
-        season: season
+        team_id: team_id
       }
     });
      }).then((found)=>{
@@ -81,6 +113,31 @@ return new Promise ((response,rej)=>{
 
 
 }
+
+function getPouchRostertest(team_id){
+
+const rostDB = new PouchDB('roster', { skip_setup: true });
+
+// db.destroy();
+console.log("ingetroster", team_id);
+
+
+
+      return rostDB.find({
+      selector: {
+        team_id: team_id
+      }
+    }).then((found)=>{
+       console.log("found this ind", found);
+
+}).catch(e => {
+    console.log("Error in pouchDBTransfer: "+e);
+  });
+  }
+
+
+
+
 
 function getPouchPitcher(){
 

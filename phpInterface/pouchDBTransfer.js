@@ -22,7 +22,6 @@ return new Promise ((response,rej)=>{
     }else{
       rostlistDB.allDocs({include_docs: true ,startkey: '_', descending:true})
      .then((res)=>{
-       console.log(res.rows)
      response(res.rows);
      reject("returned from db.info() promise");
    });
@@ -32,13 +31,11 @@ return new Promise ((response,rej)=>{
   .then((res) => {
     return getRosterList();
   }).then((obj)=> {
-    console.log("roster_list response in pouch", obj);
       return rostlistDB.bulkDocs(obj);
 
   }).then((res)=>{
     return rostlistDB.allDocs({include_docs: true, descending:true});
   }).then((found)=>{
-    console.log("found list", found)
     response(found.rows);
   }).catch(e => {
     rej("Error in pouchDBTransfer: "+e);
@@ -54,7 +51,6 @@ function getPouchRoster(team_id){
 const rostDB = new PouchDB('roster', { skip_setup: true });
 
 // db.destroy();
-console.log("ingetroster", team_id);
 
 return new Promise ((response,rej)=>{
 
@@ -64,20 +60,17 @@ return new Promise ((response,rej)=>{
     if(res.doc_count === 0){
         resolve();
     }else{
-     console.log("after doc count:", res);
    rostDB.createIndex({
        index: {
          fields:['team_id']
        }
      }).then((res)=>{
-       console.log("response test", res)
           return rostDB.find({
       selector: {
         team_id: team_id
       }
     });
      }).then((found)=>{
-       console.log("found this ind", found);
       response(found.docs);
      reject("returned from db.info() promise");
    });
@@ -114,31 +107,6 @@ return new Promise ((response,rej)=>{
 
 }
 
-function getPouchRostertest(team_id){
-
-const rostDB = new PouchDB('roster', { skip_setup: true });
-
-// db.destroy();
-console.log("ingetroster", team_id);
-
-
-
-      return rostDB.find({
-      selector: {
-        team_id: team_id
-      }
-    }).then((found)=>{
-       console.log("found this ind", found);
-
-}).catch(e => {
-    console.log("Error in pouchDBTransfer: "+e);
-  });
-  }
-
-
-
-
-
 function getPouchPitcher(){
 
       return pitchersDB.allDocs({include_docs: true, limit: 1, descending:true})
@@ -146,6 +114,14 @@ function getPouchPitcher(){
             return res.rows[0].doc;
     });
   }
+
+  function getPouchPitchers(){
+
+        return pitchersDB.allDocs({include_docs: true, descending:true})
+           .then((res)=>{
+              return res.rows;
+      });
+    }
 
 function pouchHasPitcher(){
    return pitchersDB.allDocs({include_docs: true, limit: 1, descending:true})

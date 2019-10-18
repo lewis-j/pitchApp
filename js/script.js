@@ -66,11 +66,6 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
   change([0,1]);
 
 
-  pouchHasPitcher().then((hasPitcher)=>{
-      if(!hasPitcher){
-        console.log("no data");
-      }
-  });
 
 
 
@@ -182,9 +177,6 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
           else {
             gameCount.totalBalls++;
             gameCount.ballCount++;
-            if (gameCount.ballCount == 3) {
-              console.log("ball Count:", gameCount.ballCount);
-            }
           }
         }
       }
@@ -232,12 +224,11 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
       pitchObject.timeStamp = getCurrentTime();
       myCircle.setAttributeNS(null, "fill", pitchObject.pitchColor);
       newCircle = true;
-      console.log("PLayer DATA:",PlayerData);
       /* Begin jad */
       if (gl_newPitcher) /*switching new pitch to boolean 0=false 1=true*/ {
         gl_newPitcher = false;
         pitchObject._id = new Date();
-        // pitchObject.pitcher_id = PlayerData.pitcher_id;
+
         PlayerData._id = new Date();
 
 
@@ -247,21 +238,13 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
           console.log(err)
         });
 
-        // storeData(PlayerData, function(){
-        //   storeData(pitchObject, null);
-        // });
-
-
       }
       else {
         pitchObject._id = new Date();
         pitchObject.pitcher_id = PlayerData._id;
-        console.log("pitch object:", pitchObject);
         storePouch(pitchObject).catch((err) => {
           console.log(err);
         });
-        // storeData(pitchObject, null);
-        //   console.log("Entering ONLY pitchObject.objType: " + pitchObject.objType);
       }
       /* End jad */
       pitchData.push(pitchObject);
@@ -330,22 +313,17 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
   }
   //Remove last entered pitch data
   $('#undo-entry').click((event) => {
-    console.log("pitchData local length:", pitchData.length);
     if (pitchData.length > 0) {
       var circle = document.getElementsByClassName('mycircle');
       var lastElement = circle[circle.length - 1];
       if (lastElement.savedToGraph) {
         db.allDocs({ include_docs: true, startkey: '_', limit: 2, descending: true })
           .then(res => {
-            console.log("pitchData length: ", pitchData.length);
-            // console.log("response: ", res.rows);
-            //     //place deleted pitch data in temporary array
             if (pitchData.length == 0) {
 
               updateGameCountUI(zeroGameCount(gameCount));
             }
             else {
-              console.log("----------------response rows: ",res.rows);
               gameCount = res.rows[1].doc.gameCount;
               updateGameCountUI(gameCount);
 
@@ -459,12 +437,9 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
 
 
   getPouchRosterList().then((res) => {
-    console.log("items", res);
-    var rosterIndex;
+
     res.forEach((item,index) => {
       item = item.doc;
-
-        console.log("before get roster", res.length);
 
       if(res.length-1 == index){
         $('#roster-list').append("<option selected data-id="+item._id+">" + item.year + " " + item.season + " " + item.title +"</option");
@@ -474,16 +449,16 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
       }
 
     });
-     console.log("index:",typeof(rosterIndex));
     return getPouchRoster(1);
 
   }).then((res)=>{
+    pitchersData = res;
       res.forEach((item)=>{
-          $('#pitcher-name').append("<option selected data-id="+item._id+">" + item.pitcher_name +"</option");
+          $('#pitcher-name').append("<option data-id="+item._id+">" + item.pitcher_name +"</option");
       });
 
-  }).catch((e) => {
-    console.log("Error:", e)
+  }).catch((err) => {
+    console.log(err)
   });
 
 
@@ -491,8 +466,10 @@ $('#roster-list').change((e)=>{
   var index = parseInt(e.target.options[e.target.selectedIndex].dataset.id);
     getPouchRoster(index).then((res)=>{
       $('#pitcher-name').empty();
+      $('#pitcher-name').append("<option selected disabled value='unselected'><i>Select Pitcher</i></option>");
+      pitchersData = res;
       res.forEach((item)=>{
-          $('#pitcher-name').append("<option selected data-id="+item._id+">" + item.pitcher_name +"</option");
+          $('#pitcher-name').append("<option data-id="+item._id+">" + item.pitcher_name +"</option");
       });
   });
 });
@@ -633,6 +610,7 @@ var valid = true;
     $('#game-type-group').css('opacity','1');
     $('#game-type-group').css('visibility','visible');
   });
+
   $('#pitcher-name').click((e)=>{
     document.getElementById("pitcher-name").classList.remove('ui_invalid');
   });
@@ -737,7 +715,6 @@ $('#op-team-name').change((e)=>{
      .style("font-size", "15px")
      .style("text-decoration", "bold")
    .text("$");
-        console.log("chart size: ", height);
 
     var color = d3.scaleOrdinal(['#4daf4a','#377eb8']);
 
@@ -789,7 +766,6 @@ function change(data){
 // Then, interpolate from _current to the new angles.
 // During the transition, _current is updated in-place by d3.interpolate.
 function arcTween(a) {
-  console.log('arctween',a);
   var i = d3.interpolate(this._current, a);
   this._current = i(0);
   return function(t) {
@@ -951,7 +927,7 @@ function arcTween(a) {
 
   //definition for full screen mode
   function GoInFullscreen(element) {
-    console.log(element);
+
 	if(element.requestFullscreen)
 		element.requestFullscreen();
 	else if(element.mozRequestFullScreen)
@@ -976,7 +952,7 @@ function GoOutFullscreen() {
 //open app in full screen mode using body elemnt
 $('#fullscreen').click((e)=>{
   if(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement || null){
-    console.log("true");
+
      GoOutFullscreen($('body').get(0));
 e.target.classList.remove("fa-compress");
 e.target.classList.add("fa-expand");

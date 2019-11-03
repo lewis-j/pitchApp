@@ -2,6 +2,19 @@
 /*global PouchDB*/
 /*global d3*/
 $(document).ready(function() {
+  const fetchPromise = fetch('html/menus.html');
+fetchPromise.then(response => {
+  return response.text();
+}).then((res)=>{
+    $('body').append(res);
+    inititalizeState();
+}).catch((err)=>{
+  console.log("Error in script.js", err);
+});
+
+});
+
+function inititalizeState(){
    //colors for pitch radio buttons and cirlce elements
   // [FASTBALL, CHANGEUP, SLIDER, CURVEBALL, OTHER ]
   const pitchColors = ["red", "blue", "green", "purple", "orange"];
@@ -1124,4 +1137,4 @@ e.target.classList.add("fa-expand");
 
 
 
-});
+}

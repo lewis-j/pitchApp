@@ -195,6 +195,11 @@ margin-left: 33px;
  background-repeat: no-repeat;
 }
 
+#sync-roster{
+  background-color: black;
+  color:white;
+}
+
 #transfer-edit-screen{
     height: 100%;
     width: 0px;
@@ -203,6 +208,7 @@ margin-left: 33px;
     left: 172;
     transition: 0.5s;
     background-color: grey;
+    overflow-x: hidden;
 }
 
 .close-btn {
@@ -258,4 +264,8 @@ margin-left: 33px;
      visibility: hidden;
    -webkit-transition: 1s;
   transition: 1s;
+}
+
+#transfer-edit-table{
+  overflow: scroll;
 }

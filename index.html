@@ -10,7 +10,8 @@
       <!--<link rel="stylesheet" href="fontawesome-free-5.8.1-web/css/all.css">-->
       <script src="dependencies/pouch/pouchdb-7.0.0.min.js"></script>
       <script src="dependencies/pouch/pouchdb.find.js"></script>
-      <script src="https://d3js.org/d3.v5.min.js"></script>
+      <!-- <script src="https://d3js.org/d3.v5.min.js"></script> -->
+      <script src="dependencies/d3.min.js"></script>
       <script type="text/javascript" src="phpInterface/xmlCalls.js"></script>
       <script type="text/javascript" src="phpInterface/pouchDBTransfer.js"></script>
       <script type="text/javascript" src="js/script.js"></script>
@@ -113,7 +114,7 @@
      <div id="select-menu" >
          <h3>Select Game Options</h3>
           <div class="form-group">
-         <p class="form-item"> Pitcher</p>
+         <p class="form-item"> Pitcher <button id="sync-roster"><i class='fas fa-sync'></i></button></p>
          <select class="form-item" id="roster-list">
            <option selected disabled value="unselected"><i>Select Roster</i></option>
         </select>
@@ -173,7 +174,34 @@
     </div>
     <div id="transfer-edit-screen" class="clear-header">
         <a href="javascript:void(0)" class="close-btn">&times;</a>
+        <div id="transfer-edit-title">
+          <h2>Local pitch Data</h2>
+          <button class="btn btn-primary" id="upload-btn">Upload to Database  <i class="fas fa-upload"></i></button>
+        </div>
+        <div id="transfer-edit-table">
+        </div>
    </div>
+   <div id="delete-local-modal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+      <h4 class="modal-title">Delete Pitch Session</h4>
+      <button type="button" class="close" data-dismiss="modal">&times;</button>
+    </div>
+      <div class="modal-body">
+        <p>Are you sure you would like to delete this pitchers session data? </p>
+        <div id="delete-local-modal-body"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" id="comfirm-local-delete" data-dismiss="modal">Comfirm Delete</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
 
 
 <div class="container-fluid">

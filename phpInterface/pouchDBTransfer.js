@@ -4,10 +4,11 @@
 
 var pitchersDB = new PouchDB('pitchers');
 var pitchesDB = new PouchDB('pitch');
+var rostlistDB = new PouchDB('roster_list');
+var rostDB = new PouchDB('roster');
 
 function getPouchRosterList(){
 
-const rostlistDB = new PouchDB('roster_list', { skip_setup: true });
 
  // rostlistDB.destroy();
 
@@ -48,7 +49,6 @@ return new Promise ((response,rej)=>{
 
 function getPouchRoster(team_id){
 
-const rostDB = new PouchDB('roster', { skip_setup: true });
 
 // db.destroy();
 
@@ -107,6 +107,33 @@ return new Promise ((response,rej)=>{
 
 }
 
+function deletePouchPitches(id){
+
+pitchesDB.find({
+  selector:{
+    pitcher_id: id
+  }
+}).then((res)=>{
+
+  console.log("pitch data to delete:", res.docs);
+  res.docs.forEach( function(item){
+    console.log("item", item);
+    pitchesDB.remove(item);
+  });
+
+ return pitchersDB.get(id).then((res)=>{
+   pitchersDB.remove(res);
+ });
+
+}).then(()=>{
+
+}).catch((err)=>{
+  console.error("error in pouchDBTransfer deletepouchpitch", err);
+});
+
+
+}
+
 function getPouchPitcher(){
 
       return pitchersDB.allDocs({include_docs: true, limit: 1, descending:true})
@@ -115,7 +142,7 @@ function getPouchPitcher(){
     });
   }
 
-  function getPouchPitchers(){
+function getPouchPitchers(){
 
         return pitchersDB.allDocs({include_docs: true, descending:true})
            .then((res)=>{
@@ -223,4 +250,31 @@ function transferPouchToSql(){
     fail(error);
   });
   });
+}
+
+function syncRoster(){
+return new Promise((resolve, reject)=>{
+
+  rostDB.destroy().then((res)=>{
+    rostDB = new PouchDB('roster');
+      return getRoster();
+    }).then((obj)=> {
+      return rostDB.bulkDocs(obj);
+    }).then(()=>{
+      return rostlistDB.destroy();
+    }).then((res)=>{
+      rostlistDB = new PouchDB('roster_list');
+      return getRosterList();
+    }).then((obj)=>{
+      return rostlistDB.bulkDocs(obj);
+    }).then((res)=>{
+     return rostlistDB.allDocs({include_docs: true, descending:true});
+   }).then((found)=>{
+     console.log("found list: ",found);
+     resolve(found.rows);
+   }).catch((err)=>{
+       reject("Error in pouchDBTransfer.js : "+err);
+
+   });
+});
 }

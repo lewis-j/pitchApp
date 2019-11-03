@@ -75,7 +75,7 @@
         $mystatement -> bind_result($myid, $mypitcher_name );
 
         // loop thru found rows in results
-        print "<div class='container'><div class='row table-group'>
+        print "<div class='container main'><div class='row table-group'>
 
 
               <div class='my-tables offset-md-2 col-md-8 offset-lg-3 col-lg-6'>

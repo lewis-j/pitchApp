@@ -4,12 +4,12 @@ $(document).ready(function() {
 
 	  document.getElementById("left-nav-menu").style.left = "-18vw";
 
-  $('#menu-btn').click(function() {
-
+  $('#menu-btn').click(function(e) {
+			console.log("Event object of menu:", e.target.parentNode);
     if (document.getElementById("left-nav-menu").style.left == "-18vw") {
       document.getElementById("left-nav-menu").style.left = "0px";
       $(".main").get(0).addEventListener("click", closeLeftMenu, true);
-      $(".nav-close").get(1).addEventListener("click", closeLeftMenu, true);
+      // $(".nav-close").get(1).addEventListener("click", closeLeftMenu, true);
 
     }
     else {
@@ -47,7 +47,7 @@ $(document).ready(function() {
 
   function removeMenuListeners() {
     $(".main").get(0).removeEventListener("click", closeLeftMenu, true);
-    $(".nav-close").get(1).removeEventListener("click", closeLeftMenu, true);
+    // $(".nav-close").get(1).removeEventListener("click", closeLeftMenu, true);
 
   }
 

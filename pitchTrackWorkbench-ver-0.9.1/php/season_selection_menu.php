@@ -1,6 +1,7 @@
 <?php
     include "SQLConnect.inc.php";
-?><!DOCTYPE html>
+?>
+<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -37,7 +38,7 @@
           </div>
         <?php
         // Define SQL statement
-        $mysql = "SELECT `team_id`,`year`, `season`
+        $mysql = "SELECT `team_id`,`title`,`year`, `season`
         FROM `srjc_team_list`";
 
 
@@ -48,16 +49,16 @@
         $mystatement -> execute();
 
         // Bind results: id, name, address, hours
-        $mystatement -> bind_result($id, $year, $season);
+        $mystatement -> bind_result($id,$title, $year, $season);
 
         ?>
-          <div class="container">
+          <div class="container main">
               <div class="row">
         <?php
         while ( $mystatement -> fetch() ) {
-            echo "<div class='col-md-12 seasons-info'><a href='main-list.php?id=$id'><h4 class='inline-title'>$season $year</h4></a>
+            echo "<div class='col-md-12 seasons-info'><a href='main-list.php?id=$id'><h4 class='inline-title'>$season $year $title</h4></a>
                   <a class='button btn btn-dark season-edit' href='edit-team.php?id=$id'>Edit</a>
-                  <button type='button' class='btn btn-danger' data-toggle='modal' data-id='$id' data-title='Team of $season $year' data-target='.season-delete-modal'>Delete</button>
+                  <button type='button' class='btn btn-danger' data-toggle='modal' data-id='$id' data-title='Team of $season $year $title' data-target='.season-delete-modal'>Delete</button>
                   </div>";
 
         }

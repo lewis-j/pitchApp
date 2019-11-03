@@ -606,6 +606,39 @@ var valid = true;
 
   });
 
+  $('#sync-roster').click(()=>{
+
+      syncRoster().then((rosterList)=>{
+        console.log("syncRoster returned list: ",rosterList);
+
+        $('#roster-list').empty();
+        rosterList.forEach((item,index) => {
+          item = item.doc;
+
+          if(rosterList.length-1 == index){
+            $('#roster-list').append("<option selected data-id="+item._id+">" + item.year + " " + item.season + " " + item.title +"</option");
+            rosterIndex = parseInt(item._id);
+          }else{
+              $('#roster-list').append("<option data-id="+item._id+">" + item.year + " " + item.season + " " + item.title +"</option");
+          }
+        });
+
+          return getPouchRoster(1);
+
+      }).then((res)=>{
+          pitchersData = res;
+          $('#pitcher-name').empty();
+          $('#pitcher-name').append("<option selected disabled value='unselected'><i>Select Pitcher</i></option>");
+            res.forEach((item)=>{
+                $('#pitcher-name').append("<option data-id="+item._id+">" + item.pitcher_name +"</option");
+            });
+
+          }).catch((err) => {
+          console.log(err)
+          });
+      });
+
+
   $('#pitcher-name').change((e)=>{
     $('#game-type-group').css('opacity','1');
     $('#game-type-group').css('visibility','visible');
@@ -807,7 +840,8 @@ function arcTween(a) {
 
   $('#switch-pitcher').click(function() {
 
-
+      // closeAllMenus(document.getElementById('transfer-edit-screen'));
+       hideMenu(document.getElementById('transfer-edit-screen'));
 
     $('#select-pitcher-screen').css('width', '83vw');
     $('#select-pitcher-screen').css('left', '17vw');
@@ -824,10 +858,119 @@ function arcTween(a) {
 
   $('#transfer-data').click(() => {
 
-    $('#transfer-data').text("Starting transfer!");
+    // $('#transfer-data').text("Starting transfer!");
     $('#transfer-edit-screen').css('width', '83vw');
     $('#transfer-edit-screen').css('left', '17vw');
 
+
+    $('#transfer-edit-table').empty();
+
+     getPouchPitchers().then((res)=>{
+       console.log("pitchers data in pouch:", res);
+
+      var table = document.createElement('table');
+      table.setAttribute('class','game-stat table table-striped table-border  table-sm');
+      var header = document.createElement('thead');
+      var body = document.createElement('tbody');
+      var tr =  document.createElement('tr');
+      var th =  document.createElement('th');
+      var button = document.createElement('button');
+      button.setAttribute('class', 'delete-pouch');
+      button.setAttribute('data-toggle','modal');
+      button.setAttribute('data-target','#delete-local-modal');
+      th.setAttribute('scope', 'col');
+      th.innerHTML = 'Player Name';
+      tr.appendChild(th);
+      th = th.cloneNode(true);
+      th.innerHTML = 'Date';
+      tr.appendChild(th);
+      th = th.cloneNode(true);
+      th.innerHTML = 'Game type';
+      tr.appendChild(th);
+      th = th.cloneNode(true);
+      th.innerHTML = 'Opponent';
+      tr.appendChild(th);
+      th = th.cloneNode(true);
+      th.innerHTML = 'Action';
+      tr.appendChild(th);
+      header.appendChild(tr);
+      table.appendChild(header);
+
+       res.forEach((item)=>{
+
+         playerInfo = item.doc;
+          tr =  document.createElement('tr');
+          td = document.createElement('td');
+          td.innerHTML = playerInfo.playerName;
+          tr.appendChild(td);
+          td = td.cloneNode(true);
+          td.innerHTML = playerInfo.date;
+          tr.appendChild(td);
+          td = td.cloneNode(true);
+          td.innerHTML = playerInfo.gameType;
+          tr.appendChild(td);
+          td = td.cloneNode(true);
+          td.innerHTML = playerInfo.opponent;
+          button = button.cloneNode(true);
+          button.innerHTML = 'Delete';
+          button.setAttribute('data-id', playerInfo._id);
+          tr.appendChild(td);
+          tr.appendChild(button);
+
+      body.appendChild(tr);
+
+
+       });
+
+       table.appendChild(body);
+       document.getElementById("transfer-edit-table").appendChild(table);
+
+       $('.delete-pouch').click((e)=>{
+
+        console.log("target of delete button", e.target.parentNode.parentNode.parentNode.children[0].children[0].children);
+      var htmlCollection =  e.target.parentNode.children;
+      var rowTitles =  e.target.parentNode.parentNode.parentNode.children[0].children[0].children;
+
+      var table = document.createElement('table');
+      table.setAttribute('class','game-stat table table-striped table-border  table-sm');
+      var body = document.createElement('tbody');
+
+      for(var i=0; i< htmlCollection.length -1; i++){
+
+        console.log("TESTing loop");
+        var tr =  document.createElement('tr');
+        var th =  document.createElement('th');
+        var thProp =  document.createElement('th');
+
+        th.innerHTML = `${rowTitles[i].innerHTML}`;
+        thProp.innerHTML = htmlCollection[i].innerHTML;
+
+        tr.appendChild(th);
+        tr.appendChild(thProp);
+        body.appendChild(tr);
+        table.appendChild(body);
+
+      }
+
+
+     document.getElementById('delete-local-modal-body').innerHTML="";
+     document.getElementById('delete-local-modal-body').appendChild(table);
+
+        var deleteBtn = document.getElementById('comfirm-local-delete');
+        deleteBtn.setAttribute('data-id',e.target.dataset.id);
+
+       });
+
+     }).catch((err)=>{
+       console.log("Error in script.js:", err);
+
+     });
+
+
+
+
+ // closeAllMenus(document.getElementById('select-pitcher-screen'));
+ hideMenu(document.getElementById('select-pitcher-screen'));
 
     // transferPouchToSql().then((res) => {
     //   console.log(res);
@@ -839,6 +982,23 @@ function arcTween(a) {
     // });
 
   });
+
+  $('#comfirm-local-delete').click((e)=>{
+console.log("delete-local target:", e.target.dataset.id);
+    deletePouchPitches(e.target.dataset.id);
+
+  });
+
+
+   function hideMenu( menuPage ){
+     menuPage.style.visibility = 'hidden';
+     menuPage.style.left = "17vw";
+     menuPage.style.width = "0px";
+     removeMenuListeners();
+     setTimeout(() => {
+                        menuPage.style.visibility = 'visible'; }, 1000);
+
+   }
 
   $('#view-data').click(()=>{
     window.location.href = "pitchTrackWorkbench-ver-0.9.1/php/main.php";
@@ -888,27 +1048,24 @@ function arcTween(a) {
     }
     else {
 
-      closeAllMenus();
+      closeAllMenus(document.getElementById('select-pitcher-screen'));
+      closeAllMenus(document.getElementById('transfer-edit-screen'));
     }
 
   });
 
   $(".close-btn").click(function(e) {
 
-      document.getElementById("left-nav-menu").style.left = "-17vw";
-    e.target.parentNode.style.left = "-17vw";
-    e.target.parentNode.style.width = "0px";
-    removeMenuListeners();
-    setTimeout(() => { document.getElementById('select-pitcher-screen').style.left = "17vw"; }, 1000);
+    closeAllMenus(e.target.parentNode);
 
   });
 
-  function closeAllMenus() {
+  function closeAllMenus(openMenu) {
     document.getElementById("left-nav-menu").style.left = "-17vw";
-    document.getElementById('select-pitcher-screen').style.left = "-17vw";
-    document.getElementById('select-pitcher-screen').style.width = "0px";
+    openMenu.style.left = "-17vw";
+    openMenu.style.width = "0px";
     removeMenuListeners();
-    setTimeout(() => { document.getElementById('select-pitcher-screen').style.left = "17vw"; }, 1000);
+    setTimeout(() => { openMenu.style.left = "17vw"; }, 1000);
 
   }
 

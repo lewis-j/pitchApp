@@ -266,7 +266,7 @@ margin-left: 33px;
   transition: 1s;
 }
 
-#transfer-edit-table{
+#table-container{
   overflow: scroll;
   height: 80%;
   background-color: whitesmoke;

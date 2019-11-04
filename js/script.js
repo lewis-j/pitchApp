@@ -241,8 +241,9 @@ document.body.style.setProperty('--OT-color',pitchColors[4]);
       if (gl_newPitcher) /*switching new pitch to boolean 0=false 1=true*/ {
         gl_newPitcher = false;
         pitchObject._id = new Date();
-
         PlayerData._id = new Date();
+
+        pitchObject.pitcher_id = PlayerData._id;
 
 
         storePouch(PlayerData).then(function(res) {
@@ -688,43 +689,46 @@ $('#op-team-name').change((e)=>{
 
 
   $('#load-btn').click(() => {
-    var tempPitcher;
-    getPouchPitcher().then((res) => {
-      tempPitcher = res;
-      $('#start-background').css('width', '0');
-      PlayerData._id = res._id;
-      return getPouchPitches(res._id);
-    }).then((res) => {
 
-      var pitchesArray = pitchData = res.docs;
-
-      updateLeftPanel(tempPitcher, pitchesArray[pitchesArray.length - 1]);
-      gameCount = pitchesArray[pitchesArray.length - 1].gameCount;
-
-      var svgNS = "http://www.w3.org/2000/svg";
-      pitchesArray.forEach((item) => {
-
-        myCircle = document.createElementNS(svgNS, "circle"); //to create a circle. for rectangle use "rectangle"
-        myCircle.setAttributeNS(null, "class", "mycircle");
-        myCircle.setAttributeNS(null, "cx", item.xCoord);
-        myCircle.setAttributeNS(null, "cy", item.yCoord);
-        myCircle.setAttributeNS(null, "r", 8);
-        myCircle.setAttributeNS(null, "fill", item.pitchColor);
-        // myCircle.setAttributeNS(null, "stroke", "black");
-        // myCircle.setAttributeNS(null, "stroke-width", "1px");
-        myCircle.savedToGraph = true;
-
-        document.getElementById("mySVG").appendChild(myCircle);
-        newCircle = true;
-      });
-
-    }).catch((err) => {
-      console.log(err);
+    loadPitchGame();
     });
 
+  function loadPitchGame(id){
+      var tempPitcher;
+    getPouchPitcher(id).then((res) => {
+       tempPitcher = res;
+      $('#start-background').css('width', '0');
+      PlayerData._id = res._id;
 
+       return getPouchPitches(res._id);
 
-  });
+     }).then((res)=>{
+       console.log("load butoon response:", res);
+    var pitchesArray = pitchData = res.docs;
+    updateLeftPanel(tempPitcher, pitchesArray[pitchesArray.length - 1]);
+    gameCount = pitchesArray[pitchesArray.length - 1].gameCount;
+
+    var svgNS = "http://www.w3.org/2000/svg";
+    pitchesArray.forEach((item) => {
+
+      myCircle = document.createElementNS(svgNS, "circle"); //to create a circle. for rectangle use "rectangle"
+      myCircle.setAttributeNS(null, "class", "mycircle");
+      myCircle.setAttributeNS(null, "cx", item.xCoord);
+      myCircle.setAttributeNS(null, "cy", item.yCoord);
+      myCircle.setAttributeNS(null, "r", 8);
+      myCircle.setAttributeNS(null, "fill", item.pitchColor);
+      // myCircle.setAttributeNS(null, "stroke", "black");
+      // myCircle.setAttributeNS(null, "stroke-width", "1px");
+      myCircle.savedToGraph = true;
+
+      document.getElementById("mySVG").appendChild(myCircle);
+      newCircle = true;
+    });
+     }).catch((err) => {
+       console.log(err);
+     });;
+
+  }
 
   function updateLeftPanel(pitcherObj, pitchObj) {
 
@@ -762,7 +766,7 @@ $('#op-team-name').change((e)=>{
      .style("text-decoration", "bold")
    .text("$");
 
-    var color = d3.scaleOrdinal(['#4daf4a','#377eb8']);
+    var color = d3.scaleOrdinal(['#A70415','#15172C']);
 
     // Generate the pie
      pie = d3.pie();
@@ -771,6 +775,8 @@ $('#op-team-name').change((e)=>{
      arc = d3.arc()
                 .innerRadius(radius * .7)
                 .outerRadius(radius);
+
+                console.log("first arc call:", arc);
 
     //Generate groups
     arcs = g.selectAll("arc")
@@ -813,7 +819,7 @@ function change(data){
 // During the transition, _current is updated in-place by d3.interpolate.
 function arcTween(a) {
   var i = d3.interpolate(this._current, a);
-  this._current = i(0);
+  this._current = i(1);
   return function(t) {
     return arc(i(t));
   };
@@ -876,43 +882,22 @@ function arcTween(a) {
     $('#transfer-edit-screen').css('left', '17vw');
 
 
-    $('#transfer-edit-table').empty();
+    $('#transfer-edit-content').empty();
 
      getPouchPitchers().then((res)=>{
        console.log("pitchers data in pouch:", res);
-
-      var table = document.createElement('table');
-      table.setAttribute('class','game-stat table table-striped table-border  table-sm');
-      var header = document.createElement('thead');
-      var body = document.createElement('tbody');
-      var tr =  document.createElement('tr');
-      var th =  document.createElement('th');
+      var body = document.getElementById('transfer-edit-content');
       var button = document.createElement('button');
-      button.setAttribute('class', 'delete-pouch');
-      button.setAttribute('data-toggle','modal');
-      button.setAttribute('data-target','#delete-local-modal');
-      th.setAttribute('scope', 'col');
-      th.innerHTML = 'Player Name';
-      tr.appendChild(th);
-      th = th.cloneNode(true);
-      th.innerHTML = 'Date';
-      tr.appendChild(th);
-      th = th.cloneNode(true);
-      th.innerHTML = 'Game type';
-      tr.appendChild(th);
-      th = th.cloneNode(true);
-      th.innerHTML = 'Opponent';
-      tr.appendChild(th);
-      th = th.cloneNode(true);
-      th.innerHTML = 'Action';
-      tr.appendChild(th);
-      header.appendChild(tr);
-      table.appendChild(header);
+          button.setAttribute('class', 'delete-pouch');
+          // button.setAttribute('data-toggle','modal');
+          // button.setAttribute('data-target','#delete-local-modal');
 
        res.forEach((item)=>{
 
          playerInfo = item.doc;
           tr =  document.createElement('tr');
+          tr.setAttribute('class', 'row-items');
+          tr.setAttribute('data-id',playerInfo._id);
           td = document.createElement('td');
           td.innerHTML = playerInfo.playerName;
           tr.appendChild(td);
@@ -926,7 +911,6 @@ function arcTween(a) {
           td.innerHTML = playerInfo.opponent;
           button = button.cloneNode(true);
           button.innerHTML = 'Delete';
-          button.setAttribute('data-id', playerInfo._id);
           tr.appendChild(td);
           tr.appendChild(button);
 
@@ -935,12 +919,18 @@ function arcTween(a) {
 
        });
 
-       table.appendChild(body);
-       document.getElementById("transfer-edit-table").appendChild(table);
+       $('.row-items').click((e)=>{
+         console.log("row-items id:", e.target.parentNode.dataset.id);
+         clearCircles();
+         loadPitchGame(e.target.parentNode.dataset.id);
+         closeAllMenus(document.getElementById('transfer-edit-screen'));
+       });
+
+
+
 
        $('.delete-pouch').click((e)=>{
-
-        console.log("target of delete button", e.target.parentNode.parentNode.parentNode.children[0].children[0].children);
+         e.stopPropagation();
       var htmlCollection =  e.target.parentNode.children;
       var rowTitles =  e.target.parentNode.parentNode.parentNode.children[0].children[0].children;
 
@@ -970,9 +960,11 @@ function arcTween(a) {
      document.getElementById('delete-local-modal-body').appendChild(table);
 
         var deleteBtn = document.getElementById('comfirm-local-delete');
-        deleteBtn.setAttribute('data-id',e.target.dataset.id);
+        deleteBtn.setAttribute('data-id',e.target.parentNode.dataset.id);
 
+         $("#delete-local-modal").modal('show');
        });
+
 
      }).catch((err)=>{
        console.log("Error in script.js:", err);
@@ -1022,19 +1014,7 @@ console.log("delete-local target:", e.target.dataset.id);
     PlayerData.pitcher_id =  pitchersData[document.getElementById("new-pitcher-select").selectedIndex]._id;
     PlayerData.startingPitcher = false;
 
-    //clear pitch graph
-    var circles = document.getElementsByClassName('mycircle');
-    if (circles.length > 0) {
-      for (var i = circles.length - 1; i >= 0; i--) {
-        document.getElementById('mySVG').removeChild(circles[i]);
-
-      }
-      newCircle = true;
-    }
-
-
-
-
+    clearCircles();
     //close nav menus
     document.getElementById("left-nav-menu").style.left = "-17vw";
     document.getElementById('select-pitcher-screen').style.left = "-17vw";
@@ -1050,6 +1030,18 @@ console.log("delete-local target:", e.target.dataset.id);
     document.getElementById('first-pitch').checked = true;
 
   });
+
+  function clearCircles(){
+    //clear pitch graph
+    var circles = document.getElementsByClassName('mycircle');
+    if (circles.length > 0) {
+      for (var i = circles.length - 1; i >= 0; i--) {
+        document.getElementById('mySVG').removeChild(circles[i]);
+
+      }
+      newCircle = true;
+    }
+  }
 
   $('#menu-btn').click(function() {
 

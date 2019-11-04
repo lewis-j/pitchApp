@@ -18,11 +18,11 @@ body{
 .left-panel {
    position: relative;
     background-color: #A8A8A8;
-    
+
 }
 
 .bearcub-logo {
-   margin-left:10px;
+   text-align: center;
    padding:0;
 }
 #session-game{
@@ -33,14 +33,14 @@ body{
 
 
 .session-item {
-    
+
     border-radius: 5px;
     text-align: center;
     margin-right: 15px;
 }
 
 .session-item h6{
-    
+
     font-weight: bold;
     border-bottom: 2px solid #ccc;
     color: white;
@@ -93,7 +93,7 @@ body{
 #pitch-zone{
   margin: 0px auto;
   width: 650px ;
-  
+
 }
 
 
@@ -121,7 +121,7 @@ body{
   }
     100%{
      border-color:red;
-     color:red;    
+     color:red;
     }
 }
 
@@ -144,7 +144,7 @@ body{
   }
     100%{
      border-color:yellow;
-     color:yellow;    
+     color:yellow;
     }
 }
 
@@ -156,7 +156,7 @@ body{
     border-bottom: 2px solid #ccc;
     width: auto;
     color: white;
-    
+
 }
 
 
@@ -168,7 +168,7 @@ body{
     display: block;
     width: 90px;
     margin: 20px auto 5px;;
-    
+
 }
 
 #mph-wrapper{
@@ -222,7 +222,7 @@ position: absolute;
 .switch-field label {
   display: inline-block;
   width: 48%;
-  height:40px; 
+  height:40px;
   background-color: rgba(206, 198, 197);
   color: #15172C;
   line-height: normal;
@@ -244,12 +244,12 @@ position: absolute;
 }
 #pitch-fields label{
    font-size: 12px;
-   
+
 }
 
 #pitch-fields label:last-of-type {
     width: 100%;
-   
+
 }
 
 #end-play-options label:last-of-type {
@@ -338,7 +338,7 @@ position: absolute;
   height: 34px;
   margin: 5px auto;
 }
-.toggle input { 
+.toggle input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -362,7 +362,7 @@ position: absolute;
     font-weight: bold;
     color: black;
   padding-left: 15px;
-  border-radius: 5px;    
+  border-radius: 5px;
   height: 26px;
   width: 50px;
   left: 4px;
@@ -374,7 +374,7 @@ position: absolute;
 input:focus + .slider-2 {
   box-shadow: 0 0 1px #15172C;;
 }
-input:checked + .slider-2:before { 
+input:checked + .slider-2:before {
   -webkit-transform: translateX(40px);
   -ms-transform: translateX(40px);
   transform: translateX(40px);
@@ -383,7 +383,7 @@ input:checked + .slider-2:before {
 }
 .selectpicker:first-of-type {
   margin-left: 20px;
-  
+
 }
 
 .btn {
@@ -412,18 +412,18 @@ input:checked + .slider-2:before {
         width: 50px;
         top: 30vh;
         display: none;
-            
 
-    
+
+
 }
 
 #left-batter {
-    left: -60px;    
+    left: -60px;
 }
 #right-batter{
     right:-60px;
-  
-  
+
+
 }
 #mph-title {
 display: block;
@@ -434,7 +434,7 @@ text-align: center;
     text-align: center;
     font-size: 30px;
     margin-bottom: 0px;
-    
+
 }
 #mph-display {
     display: block;
@@ -460,7 +460,7 @@ text-align: center;
      -webkit-box-shadow:  0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
     box-shadow:  0 1px 3px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.1);
     border-style: none;
-  
+
 }
 #data-entry{
 width: 65%;
@@ -471,14 +471,14 @@ width: 65%;
     font-size: 15px;
     text-align: center;
     padding: 2px;
-    
+
 }
 
 
 /*@media screen and (max-width: 995px) , screen and (max-height: 768px) {*/
 /*  .right-panel {*/
-  
+
 /*       height: calc((100vw * .75) - 56px);*/
 /*    }*/
-  
+
 /*}*/

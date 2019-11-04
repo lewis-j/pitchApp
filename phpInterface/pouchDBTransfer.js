@@ -134,12 +134,20 @@ pitchesDB.find({
 
 }
 
-function getPouchPitcher(){
+function getPouchPitcher(id = -1){
 
-      return pitchersDB.allDocs({include_docs: true, limit: 1, descending:true})
-         .then((res)=>{
-            return res.rows[0].doc;
-    });
+       if(id == -1){
+         return pitchersDB.allDocs({include_docs: true, limit: 1, descending:true})
+            .then((res)=>{
+               return res.rows[0].doc;
+               });
+         }else{
+               return pitchersDB.get(id).then((res)=>{
+                 console.log("getPouchPitcher:", res._id);
+                 return res;
+               });
+         }
+
   }
 
 function getPouchPitchers(){
